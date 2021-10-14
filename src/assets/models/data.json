@@ -1,0 +1,93 @@
+{
+  "15Minutes": {
+    "BridgePort": [
+      "extendPortTotalPrevious15MinDnDiscByteCounter",
+      "extendPortTotalPrevious15MinDnDiscFrameCounter",
+      "extendPortTotalPrevious15MinDnFwdByteCounter",
+      "extendPortTotalPrevious15MinDnFwdFrameCounter",
+      "extendPortTotalPrevious15MinTimeMeasured",
+      "extendPortTotalPrevious15MinUpDiscByteCounter",
+      "extendPortTotalPrevious15MinUpDiscFrameCounter",
+      "extendPortTotalPrevious15MinUpFwdByteCounter",
+      "extendPortTotalPrevious15MinUpFwdFrameCounter"
+    ],
+    "ONTAggGem": [
+      "gponOntOntsideAggGemIntervalReceiveBlocksCounter64",
+      "gponOntOntsideAggGemIntervalReceiveFrags",
+      "gponOntOntsideAggGemIntervalTransmitBlocksCounter64",
+      "gponOntOntsideAggGemIntervalTransmitFrags"
+    ],
+    "vlanPort": [
+      "extendPortVlanPrevious15MinDnDiscByteCounter",
+      "extendPortVlanPrevious15MinDnDiscFrameCounter",
+      "extendPortVlanPrevious15MinDnFwdByteCounter",
+      "extendPortVlanPrevious15MinDnFwdFrameCounter",
+      "extendPortVlanPrevious15MinUpDiscByteCounter",
+      "extendPortVlanPrevious15MinUpDiscFrameCounter",
+      "extendPortVlanPrevious15MinUpFwdByteCounter",
+      "extendPortVlanPrevious15MinUpFwdFrameCounter"
+    ]
+  },
+  "1heure": {
+    "vlanPortAssociation": [
+      "extendPortVlanCurrent1DayDnDiscByteCounter",
+      "extendPortVlanCurrent1DayDnFwdByteCounter",
+      "extendPortVlanCurrent1DayUpDiscByteCounter",
+      "extendPortVlanCurrent1DayUpFwdByteCounter"
+    ],
+    "Uni": [
+      "extendPortTotalDnDiscByteCounter",
+      "extendPortTotalDnFwdByteCounter",
+      "extendPortTotalUpDiscByteCounter",
+      "extendPortTotalUpFwdByteCounter",
+      "ifOperStatus"
+    ],
+    "Pon": ["ifAdminStatus", "ifOperStatus"],
+    "OntVeipPort": ["ifAdminStatus", "ifOperStatus"],
+    "OntEthPort": ["asamIfExtCustomerId", "ifAdminStatus", "ifOperStatus"],
+    "Ont": [
+      "bponOntEquipId",
+      "bponOntSerialNumber",
+      "bponOntSubscriberId1",
+      "bponOntSubscriberLocId",
+      "ifAdminStatus",
+      "ifOperStatus"
+    ],
+    "EthernetLineSlot": [
+      "extendEtherPortStatisticsIfInDiscards",
+      "extendEtherPortStatisticsIfInNUcastPkts",
+      "extendEtherPortStatisticsIfInOctets",
+      "extendEtherPortStatisticsIfOutDiscards",
+      "extendEtherPortStatisticsIfOutNUcastPkts",
+      "extendEtherPortStatisticsIfOutOctets",
+      "ifAdminStatus",
+      "ifHighSpeed",
+      "ifOperStatus"
+    ],
+    "CpuUsage": [
+      "memAbsoluteUsage",
+      "operateStatus",
+      "startMonitorTime",
+      "totalMemSize"
+    ],
+    "EthernetPort": [
+      "ifHCInOctets",
+      "ifHCOutOctets",
+      "ifInDiscards",
+      "ifOutDiscards",
+      " tmnxPortAdminStatus",
+      "tmnxPortEtherOperSpeed",
+      "tmnxPortEtherSpeed",
+      "tmnxPortLinkStatus",
+      "tmnxPortOperStatus"
+    ]
+  },
+  "24heure": {
+    "vlanPortAssociation": [
+      "extendPortVlanCurrent1DayDnDiscByteCounter",
+      "extendPortVlanCurrent1DayDnFwdByteCounter",
+      "extendPortVlanCurrent1DayUpDiscByteCounter",
+      "extendPortVlanCurrent1DayUpFwdByteCounter"
+    ]
+  }
+}

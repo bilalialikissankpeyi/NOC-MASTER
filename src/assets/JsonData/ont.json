@@ -1,0 +1,150 @@
+ [{
+    "ObjectName": "HED1:R1.S1.LT1.PON1.ONT19",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "RDB-PBO04-F-2",
+    "DescriptionPart2": "ADODO YAOVI 90037540 22607540",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D12305",
+    "SubscriberLocationID": "22607540",
+    "FIELD10": ""
+  },
+  {
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON1.ONT25",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "BESIDENCE BENIN-T05_F5",
+    "DescriptionPart2": "SAADI FADEL 70094537 22618440",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3CF0031",
+    "SubscriberLocationID": "22618440",
+    "FIELD10": ""
+  },
+  {
+   
+    "ObjectName": "HED1:R1.S1.LT1.PON1.ONT48",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "TO1-F6",
+    "DescriptionPart2": "PRESIDENCE DE LA REPUBLIQUE 90009977 22608801",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D1081C",
+    "SubscriberLocationID": "22608801",
+    "FIELD10": ""
+  },{
+   
+    "ObjectName": "HED1:R1.S1.LT1.PON1.ONT49",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "TO05-F8",
+    "DescriptionPart2": "KOLANI DINDANN 90068508 22269517",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D10A60",
+    "SubscriberLocationID": "22269517",
+    "FIELD10": ""
+  },{
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON10.ONT23",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "T09-C2-F1",
+    "DescriptionPart2": "MIN AFFAIRES ETRANGERES ET DE LA COOPERATION 90099989 22608727",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3CEFDE3",
+    "SubscriberLocationID": "22608727",
+    "FIELD10": ""
+  },{
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON10.ONT24",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "TO9-C2-F2",
+    "DescriptionPart2": "MIN AFFAIRES ETRANGERES 90099989 22608664",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D12344",
+    "SubscriberLocationID": "22608664",
+    "FIELD10": ""
+  },{
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON16.ONT10",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "HED-T050-F6",
+    "DescriptionPart2": "BEDIHAM F XAVIER 90358643 22618355",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D11FE3",
+    "SubscriberLocationID": "22618355",
+    "FIELD10": ""
+  },
+  {
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON16.ONT11",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "T048_C-2-F6",
+    "DescriptionPart2": "LS SPT LOME CITE",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB1351391",
+    "SubscriberLocationID": "81010330",
+    "FIELD10": ""
+  },
+  {
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON16.ONT9",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "RDB_PBO08-F1",
+    "DescriptionPart2": "DOUHO BADA YAWA 90335552 22608370",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D11F8D",
+    "SubscriberLocationID": "22608370",
+    "FIELD10": ""
+  },{
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON2.ONT43",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "TO15-F3",
+    "DescriptionPart2": "LOCHE ANTONI 90011084 22618239",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLF8716762",
+    "SubscriberLocationID": "22618239",
+    "FIELD10": ""
+  },
+  {
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON2.ONT44",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "TO10-F3",
+    "DescriptionPart2": "TOTAL TOGO S.A. TOTAL TOGO S.A. 70273738 22608958",
+    "FamilyType": "GSFU",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLB3D11232",
+    "SubscriberLocationID": "22608958",
+    "FIELD10": ""
+  },
+  {
+    
+    "ObjectName": "HED1:R1.S1.LT1.PON3.ONT29",
+    "CustomerID": "- No CustomerID -",
+    "DescriptionPart1": "RESIDENCE DU BENIN_PBO17-F3",
+    "DescriptionPart2": "APALLAH ABDO 92067777 22602676",
+    "FamilyType": "",
+    "PlannedUp": "Nominal Line Rate",
+    "PlannedSoftware": "auto",
+    "SerialNumber": "ALCLF8716067",
+    "SubscriberLocationID": "22602676",
+    "FIELD10": ""
+  }]
