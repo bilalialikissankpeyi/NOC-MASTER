@@ -11,7 +11,9 @@ export function getX(data, field) {
           key !== '_id' &&
           key !== 'timestamp'
         ) {
-          timesArray.push(e['timestamp'])
+          var time = new Date(e['timestamp'])
+
+          timesArray.push(`${time.getHours()}` + ':' + `${time.getMinutes()}`)
         }
       }
     })

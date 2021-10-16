@@ -1,22 +1,37 @@
 [
-    {
-        "icon": "bx bx-shopping-bag",
-        "count": "1,995",
-        "title": "Total Users"
-    },
-    {
-        "icon": "bx bx-cart",
-        "count": "2,001",
-        "title": "Daily visits"
-    },
-    {
-        "icon": "bx bx-dollar-circle",
-        "count": "$2,632",
-        "title": "Total income"
-    },
-    {
-        "icon": "bx bx-receipt",
-        "count": "1,711",
-        "title": "Total action"
-    }
+  {
+    "icon": "bx bx-shopping-bag",
+    "count": "Total ONT",
+    "title": "11 093"
+  },
+  {
+    "icon": "bx bx-cart",
+    "count": "Total OLT",
+    "title": "50"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "High Profil",
+    "title": "50 Mb/s"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "Medium Profil",
+    "title": "25 Mb/s"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "Low Profil",
+    "title": "25 Mb/s"
+  },
+  {
+    "icon": "bx bx-receipt",
+    "count": "ONT Family Type",
+    "title": "GSFU"
+  },
+  {
+    "icon": "bx bx-receipt",
+    "count": "OLT Family Type",
+    "title": "ISAM/FTTB/FTTN"
+  }
 ]

@@ -58,6 +58,41 @@ export function getSearched(collection, value, typeofSearch) {
     }
   })
 }
+
+export function getSum(value) {
+  return new Promise(async (resolve) => {
+    var data = []
+    try {
+      console.log({ here: value.collection })
+      data = await axios.get('http://localhost:3001/getSum', {
+        params: {
+          dbname: 'mydb',
+          collection: `${value.collection}`,
+          regular: `${value.regular}`,
+          start: new Date(value.start),
+          end: new Date(value.end),
+        },
+      })
+
+      var sumObject = {}
+      data.data.map((e) => {
+        for (var key in e) {
+          if (key !== 'ObjectID' && key !== '_id' && key !== 'timestamp') {
+            if (sumObject[key] == null) {
+              sumObject[key] = 0
+            }
+            sumObject[key] += parseInt(e[key])
+          }
+        }
+      })
+      console.log('avant')
+      console.log({ sum: sumObject, data: data.data })
+      resolve({ sum: sumObject, data: data.data })
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
 /*import axios from 'axios'
 export function getSearched(collection, value, typeofSearch) {
   var url = 'http://localhost:3001/' + `${typeofSearch}`

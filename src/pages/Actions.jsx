@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { loadSearchInTimeData } from '../reducers/searchInTime'
 
 import Grid from '@material-ui/core/Grid'
@@ -271,12 +272,26 @@ const Actions = () => {
               </Table>
             </div>
             <div className='col-6'>
+              <div className='card full-height'>
+                {!itemclicked.clicked ? (
+                  <h3>Click Items to see detailed figures</h3>
+                ) : (
+                  <PerformancePanel
+                    data={searchedData}
+                    field={itemclicked.key}
+                  />
+                )}
+                {/*  */}
+              </div>
+            </div>
+
+            {/*     <div className='col-6'>
               {!itemclicked.clicked ? (
                 <h3>Click Items to see detailed figures</h3>
               ) : (
                 <PerformancePanel data={searchedData} field={itemclicked.key} />
               )}
-            </div>
+            </div>*/}
           </>
         )}
       </div>

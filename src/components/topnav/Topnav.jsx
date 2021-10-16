@@ -49,7 +49,9 @@ const Topnav = () => {
           type='text'
           placeholder='Search here...'
           onChange={(e) => {
-            dispatch(loadData(e.target.value))
+            if (e !== '') {
+              dispatch(loadData(e.target.value))
+            }
           }}
         />
         <i className='bx bx-search'></i>
