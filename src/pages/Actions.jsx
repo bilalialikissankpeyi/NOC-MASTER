@@ -13,7 +13,13 @@ import { Table } from 'reactstrap'
 
 import data from '../assets/models/data.json'
 
-import PerformancePanel from '../graphe/PerformancePanel'
+import PerformancePanel from '../graphe//PerformancePanel'
+
+import Day from './OneDay'
+
+import Hour from './OneHour'
+
+import Fifteen from './FifteenMinutes'
 
 const Actions = () => {
   let type = null
@@ -33,9 +39,9 @@ const Actions = () => {
 
   var [items, setItems] = useState([])
   var [options, setOptions] = useState([])
-  const [isclicked, setClicked] = useState(false)
+  const [isclicked, setClicked] = useState({ clicked: false, button: 'search' })
   const [timeSelected, setTimeSelected] = useState('15Minutes')
-  const [tableSelected, setTableSelected] = useState('bridgePort')
+
   const [startDate, setStartDate] = useState(
     new Date('2021-10-14T06:30:00.885Z')
   )
@@ -47,35 +53,6 @@ const Actions = () => {
     clicked: false,
     key: '',
   })
-
-  const initialise = () => {
-    var item = []
-    setItemClicked({ clicked: false, key: '' })
-    for (var key in data[timeSelected]) {
-      if (key === tableSelected) {
-        console.log('key', key)
-        console.log('value', data[timeSelected][key])
-        data[timeSelected][key].map((e) => {
-          item.push(
-            <tr
-              onClick={() => {
-                {
-                  if (!itemclicked.clicked && itemclicked.key === '') {
-                    setItemClicked({ clicked: !itemclicked.clicked, key: e })
-                  } else if (itemclicked.clicked && itemclicked.key !== e) {
-                    setItemClicked({ clicked: itemclicked.clicked, key: e })
-                  }
-                }
-              }}
-            >
-              <td>{e}</td>
-            </tr>
-          )
-        })
-      }
-    }
-    setItems(item)
-  }
 
   React.useEffect(() => {
     switch (timeSelected) {
@@ -98,27 +75,21 @@ const Actions = () => {
   React.useEffect(() => {
     switch (timeSelected) {
       case '15Minutes':
-        initialise()
         break
       case '1heure':
-        initialise()
         break
       case '24heure':
-        initialise()
         break
       default:
     }
     if (type) {
       setOptions(type.map((el) => <option key={el}>{el}</option>))
     }
-  }, [isclicked])
+  }, [isclicked.clicked])
   new Date('2021-08-03-11T12:00:00')
 
   const timeSelectOptionHandler = (e) => {
     setTimeSelected(e.target.value)
-  }
-  const tableSelectOptionHandler = (e) => {
-    setTableSelected(e.target.value)
   }
 
   const timeOptions = [
@@ -144,8 +115,10 @@ const Actions = () => {
   return (
     <div>
       <h2 className='page-header'>Time Selection</h2>
+
+      {/*Premiere Ligne */}
       <div className='row'>
-        <div className='col-2'>
+        <div className='col-3'>
           <form onSubmit={onsubmit}>
             <div className='row'>
               <Grid container justify='space-between'>
@@ -167,131 +140,255 @@ const Actions = () => {
             </div>
           </form>
         </div>
-
-        <div className='col-2'>
-          <form onSubmit={onsubmit}>
-            <div className='row'>
-              <Grid container justify='space-between'>
-                <select
-                  className='select-timeperiod'
-                  style={{
-                    padding: '20px',
-                    borderBottom: '1px solid gray',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    width: '200px',
-                    borderRadius: '13px',
-                  }}
-                  onChange={tableSelectOptionHandler}
-                >
-                  {options}
-                </select>
-              </Grid>
-            </div>
-          </form>
-        </div>
-        <div className='col-4'>
-          <div className='row'>
-            <Grid container justify='space-around'>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DateTimePicker
-                  /*disableToolbar*/
-                  variant='inline'
-                  format='MM/dd/yyy hh:mm'
-                  margin='normal'
-                  id='date-picker'
-                  label='Start Time'
-                  value={startDate}
-                  onChange={handleStartDate}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid container justify='space-around'>
-                <DateTimePicker
-                  /*disableToolbar*/
-                  variant='inline'
-                  format='MM/dd/yyy hh:mm'
-                  margin='normal'
-                  id='date-picker'
-                  label='End Time'
-                  value={endDate}
-                  onChange={handleEndDate}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
-
-            <Button
-              variant='contained'
-              type='submit'
-              color='primary'
-              onClick={() => {
-                dispatch(
-                  loadSearchInTimeData({
-                    collection: tableSelected,
-                    ObjectName: searchTerm.ObjectName,
-                    startdate: startDate,
-                    enddate: endDate,
-                  })
-                )
-                setClicked(!isclicked)
+        <div className='col-3'>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              /*disableToolbar*/
+              variant='inline'
+              format='MM/dd/yyy hh:mm'
+              margin='normal'
+              id='date-picker'
+              label='Start Time'
+              value={startDate}
+              onChange={handleStartDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
               }}
-            >
-              Search{' '}
-            </Button>
-          </div>
+            />
+          </MuiPickersUtilsProvider>
         </div>
-        {/*<div className="col-6">
-                <div className="card full-height">
-                   <h3>Fill All Required Information First</h3>
-                </div>
-                </div> */}
+        <div className='col-3'>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              /*disableToolbar*/
+              variant='inline'
+              format='MM/dd/yyy hh:mm'
+              margin='normal'
+              id='date-picker'
+              label='End Time'
+              value={endDate}
+              onChange={handleEndDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: 'search' })
+            }}
+          >
+            Search{' '}
+          </Button>
+        </div>
+      </div>
+      {/*deuxieme Ligne 15 min*/}
+      <div className='row'>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '15 Min' })
+            }}
+          >
+            15 Min
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '30 Min' })
+            }}
+          >
+            30 Min
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '45 Min' })
+            }}
+          >
+            45 Min
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '4x15 Min' })
+            }}
+          >
+            4x15 Min
+          </Button>
+        </div>
+      </div>
+      {/*troisieme Ligne heure */}
+      <div className='row'>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '1 c' })
+            }}
+          >
+            1 heure
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '6 heure' })
+            }}
+          >
+            6 heures
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '12 heure' })
+            }}
+          >
+            12 heures
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '24 heure' })
+            }}
+          >
+            24 heures
+          </Button>
+        </div>
+      </div>
 
-        {!isclicked ? (
-          <div className='col-6'>
-            <div className='card full-height'>
-              <h3>Fill All Required Information First</h3>
-            </div>
+      {/*quatrieme Ligne J*/}
+      <div className='row'>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '1 J' })
+            }}
+          >
+            1 J
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '2 J' })
+            }}
+          >
+            2 J
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '3 J' })
+            }}
+          >
+            3 J
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              setClicked({ clicked: !isclicked.clicked, button: '4 J' })
+            }}
+          >
+            4 J
+          </Button>
+        </div>
+      </div>
+
+      {/*Resultat */}
+      <div className='row' style={{ marginTop: '100px' }}>
+        {!isclicked.clicked ? (
+          <div className='card full-height'>
+            <h3>Fill All Required Information First</h3>
           </div>
         ) : (
           <>
-            <div className='col-6'>
-              <Table hover bordered>
-                <thead>
-                  <tr>
-                    <th>Champs</th>
-                  </tr>
-                </thead>
-                <tbody>{items}</tbody>
-              </Table>
-            </div>
-            <div className='col-6'>
-              <div className='card full-height'>
-                {!itemclicked.clicked ? (
-                  <h3>Click Items to see detailed figures</h3>
-                ) : (
-                  <PerformancePanel
-                    data={searchedData}
-                    field={itemclicked.key}
-                  />
-                )}
-                {/*  */}
-              </div>
-            </div>
-
-            {/*     <div className='col-6'>
-              {!itemclicked.clicked ? (
-                <h3>Click Items to see detailed figures</h3>
+            <div className='row'>
+              {isclicked.button.includes('heure') ? (
+                <Hour
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
+              ) : isclicked.button.includes('J') ? (
+                <Day
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
+              ) : isclicked.button.includes('Min') ? (
+                <Fifteen
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
+              ) : timeSelected === '1heure' ? (
+                <Hour
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
+              ) : timeSelected === '24heure' ? (
+                <Day
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
               ) : (
-                <PerformancePanel data={searchedData} field={itemclicked.key} />
+                <Fifteen
+                  clicked={isclicked.button}
+                  start={startDate}
+                  end={endDate}
+                />
               )}
-            </div>*/}
+            </div>
           </>
         )}
       </div>

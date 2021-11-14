@@ -2,7 +2,7 @@ import axios from 'axios'
 export function getX(data, field) {
   return new Promise((resolve, reject) => {
     var timesArray = []
-    console.log({ Perform: data })
+    console.log({ Perform: field })
     data.map((e) => {
       for (var key in e) {
         if (

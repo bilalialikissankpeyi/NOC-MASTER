@@ -8,13 +8,21 @@ import Loading from '../graphe/Loading'
 import { getAllList } from '../dataService/getSearchInformations'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { currentONT } from '../actions'
+import { currentONT, ontFilter } from '../actions'
 import { loadData } from '../reducers/searched'
+
+import CpuChart from '../graphe/CpuChart'
+
+import PonChart from '../graphe/PonChart'
+
+import UserInformationChart from '../graphe/UserInformationChart'
 
 const Analytics = () => {
   const [ontInformation, setOntInformation] = React.useState([])
+  var last = new Date('2021-11-15T22:00:00.885Z')
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
+  const filtered = useSelector((state) => state.ontFilter)
   console.log('fffffff')
   const history = useHistory()
   const gotToOlt = (element) => {
@@ -25,53 +33,102 @@ const Analytics = () => {
 
   React.useEffect(() => {
     console.log('fffffff', currentolt.ObjectName)
-    getAllList({
-      typeofSearch: 'getRelatedONT',
-      collection: 'ONT_INFO',
-      query: `${currentolt.ObjectName}`,
-    }).then((result) => {
-      console.log('resultat', result)
-      var items = []
-      result.map((element) => {
-        var item = []
-        for (var key in element) {
-          if (key !== '_id' && key !== 'FIELD10') {
-            item.push(<td>{element[key]}</td>)
-          }
-        }
-        items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
+    if (filtered != '') {
+      getAllList({
+        typeofSearch: 'getRelatedONT',
+        collection: 'ONT_INFO',
+        query: `${currentolt.ObjectName}`,
+      }).then((result) => {
+        console.log('resultat', result)
+        var items = []
+        result
+          .filter((value) => {
+            if (
+              value.ObjectName.includes(filtered) ||
+              value.DescriptionPart1.includes(filtered) ||
+              value.DescriptionPart2.includes(filtered) ||
+              value.SerialNumber.includes(filtered) ||
+              value.SubscriberLocationID.includes(filtered)
+            )
+              return value
+          })
+          .map((element) => {
+            var item = []
+            for (var key in element) {
+              if (key !== '_id' && key !== 'FIELD10') {
+                item.push(<td>{element[key]}</td>)
+              }
+            }
+            items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
+          })
+
+        setOntInformation(items)
       })
-      setOntInformation(items)
-    })
-  }, [])
+    }
+  }, [filtered])
 
   return (
     <>
-      {!ontInformation && <Loading />}
       <div>
-        <h2 className='page-header'>customers</h2>
+        <div className='row'>
+          <CpuChart
+            last={last}
+            ObjectName={'MINA-7360FX8'}
+            olt={'MINA-7360FX8'}
+          />
+        </div>
+        <div className='row'>
+          <PonChart
+            last={last}
+            ObjectName={'MINA-7360FX8'}
+            olt={'MINA-7360FX8'}
+          />
+        </div>
+        <div className='row'>
+          <UserInformationChart
+            last={last}
+            ObjectName={'MINA-7360FX8'}
+            olt={'MINA-7360FX8'}
+          />
+        </div>
+        <div className='row'>
+          <div className='col-6'>
+            <h2 className='page-header'>ONT</h2>
+          </div>
+
+          <div className='col-6'>
+            <div className='topnav_search'>
+              <input
+                type='text'
+                placeholder='Filter...'
+                onChange={(e) => {
+                  if (e !== '') {
+                    dispatch(ontFilter(e.target.value))
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        {!ontInformation && <Loading />}
         <div className='row'>
           <div className='col-12'>
-            <div className='card'>
-              <div className='card__body'>
-                <Table hover bordered limit={10}>
-                  <thead>
-                    <tr>
-                      <th>ObjectName </th>
-                      <th> CustomerID </th>
-                      <th>DescriptionPart1 </th>
-                      <th> DescriptionPart2 </th>
-                      <th>FamilyType</th>
-                      <th>PlannedUp</th>
-                      <th>PlannedSoftware</th>
-                      <th>SerialNumber</th>
-                      <th> SubscriberLocationID </th>
-                    </tr>
-                  </thead>
-                  <tbody>{ontInformation}</tbody>
-                </Table>
-              </div>
-            </div>
+            <Table hover bordered limit={10}>
+              <thead>
+                <tr>
+                  <th>ObjectName </th>
+                  <th> CustomerID </th>
+                  <th>DescriptionPart1 </th>
+                  <th> DescriptionPart2 </th>
+                  <th>FamilyType</th>
+                  <th>PlannedUp</th>
+                  <th>PlannedSoftware</th>
+                  <th>SerialNumber</th>
+                  <th> SubscriberLocationID </th>
+                </tr>
+              </thead>
+              <tbody>{ontInformation}</tbody>
+            </Table>
           </div>
         </div>
       </div>

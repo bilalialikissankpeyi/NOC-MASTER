@@ -19,6 +19,7 @@ export const loadSearchInTimeData = (value) => async (dispatch, getState) => {
       ObjectName: value.ObjectName,
       startdate: value.startdate,
       enddate: value.enddate,
+      olt: value.olt,
     },
     'getUserRecordsInTime'
   )

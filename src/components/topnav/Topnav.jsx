@@ -42,6 +42,7 @@ const renderUserMenu = (item, index) => (
 const Topnav = () => {
   const dispatch = useDispatch()
   const searchTerm = useSelector((state) => state.searched)
+  //const currentPage  = useSelector((state)=>state.currentPage)
   return (
     <div className='topnav'>
       <div className='topnav_search'>

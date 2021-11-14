@@ -19,6 +19,48 @@ export function getAllList(value) {
   })
 }
 
+export function getTimeFrameData(value) {
+  console.log({ send: value })
+  var url = 'http://localhost:3001/' + `${value.typeOfSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          dbname: 'mydb',
+          collection: `${value.collection}`,
+          ObjectName: value.ObjectName,
+          start: value.start,
+          end: value.end,
+          olt: value.olt,
+        },
+      })
+      console.log('Last', data.data)
+      resolve(data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
+export function getLastData(value) {
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          dbname: 'mydb',
+          collection: `${value.collection}`,
+          ObjectName: value.ObjectName,
+          last: value.last,
+          olt: value.olt,
+        },
+      })
+      console.log('Last', data.data)
+      resolve(data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
 export function getSearched(collection, value, typeofSearch) {
   var url = 'http://localhost:3001/' + `${typeofSearch}`
   return new Promise(async (resolve, reject) => {
@@ -46,6 +88,7 @@ export function getSearched(collection, value, typeofSearch) {
               ObjectName: value.ObjectName,
               startdate: value.startdate,
               enddate: value.enddate,
+              olt: value.olt,
             },
           })
           resolve(data.data)

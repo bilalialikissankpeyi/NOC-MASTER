@@ -14,7 +14,7 @@ import { getY, getX } from '../dataService/processData'
 import Loading from './Loading'
 
 //ALCLB2F6B123
-const chartoptions = {
+var chartoptions = {
   series: [],
   options: {
     color: ['#6ab04c', '#2980b9'],
@@ -135,7 +135,7 @@ export default function PerformancePanel(props) {
       <Chart
         options={goptions.options}
         series={goptions.series}
-        type='line'
+        type={props.type}
         height='100%'
       />
       {/* <Chart style={{ opacity: !x && !y ? 1 : 0 }}>
