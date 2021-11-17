@@ -19,7 +19,10 @@ import UserInformationChart from '../graphe/UserInformationChart'
 
 const Analytics = () => {
   const [ontInformation, setOntInformation] = React.useState([])
-  var last = new Date('2021-11-15T22:00:00.885Z')
+
+  var date = new Date('13 December 2021 06:00 UTC')
+  var last = new Date(date.toISOString())
+  //var last = new Date('2021-11-15T22:00:00.885Z')
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
   const filtered = useSelector((state) => state.ontFilter)
@@ -73,7 +76,7 @@ const Analytics = () => {
         <div className='row'>
           <CpuChart
             last={last}
-            ObjectName={'MINA-7360FX8'}
+            ObjectName={'MINA-7360FX8:'}
             olt={'MINA-7360FX8'}
           />
         </div>

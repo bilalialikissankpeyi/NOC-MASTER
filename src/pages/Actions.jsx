@@ -112,6 +112,23 @@ const Actions = () => {
     }
     e.preventDefault()
   }
+
+  const changeDate = (day, hour, min) => {
+    //setEndDate(new Date(2021, 10, 13, 0, 0, 0))
+    //setStartDate(new Date(2021, 10, 13 - day, 0 - hour, 0 - min, 0))
+    var start = new Date('13 December 2021 01:00 UTC')
+    var end = new Date('13 December 2021 02:02: UTC')
+    console.log(
+      'start',
+      new Date(end.toISOString()),
+      'end',
+      new Date(start.toISOString())
+    )
+    setEndDate(new Date('13 December 2021 06:02: UTC'))
+    setStartDate(new Date('13 December 2021 00:00 UTC'))
+    // console.log(new Date().toUTCString())
+  }
+
   return (
     <div>
       <h2 className='page-header'>Time Selection</h2>
@@ -145,7 +162,7 @@ const Actions = () => {
             <DateTimePicker
               /*disableToolbar*/
               variant='inline'
-              format='MM/dd/yyy hh:mm'
+              format='MM/dd/yyy HH:mm'
               margin='normal'
               id='date-picker'
               label='Start Time'
@@ -162,7 +179,7 @@ const Actions = () => {
             <DateTimePicker
               /*disableToolbar*/
               variant='inline'
-              format='MM/dd/yyy hh:mm'
+              format='dd/MM/yyyy HH:mm'
               margin='normal'
               id='date-picker'
               label='End Time'
@@ -195,6 +212,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 0, 15)
               setClicked({ clicked: !isclicked.clicked, button: '15 Min' })
             }}
           >
@@ -207,6 +225,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 0, 30)
               setClicked({ clicked: !isclicked.clicked, button: '30 Min' })
             }}
           >
@@ -219,6 +238,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 0, 45)
               setClicked({ clicked: !isclicked.clicked, button: '45 Min' })
             }}
           >
@@ -231,6 +251,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 1, 0)
               setClicked({ clicked: !isclicked.clicked, button: '4x15 Min' })
             }}
           >
@@ -246,7 +267,8 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
-              setClicked({ clicked: !isclicked.clicked, button: '1 c' })
+              changeDate(0, 1, 0)
+              setClicked({ clicked: !isclicked.clicked, button: '1 heure' })
             }}
           >
             1 heure
@@ -258,6 +280,20 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 3, 0)
+              setClicked({ clicked: !isclicked.clicked, button: '3 heure' })
+            }}
+          >
+            3 heures
+          </Button>
+        </div>
+        <div className='col-3'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            onClick={() => {
+              changeDate(0, 6, 0)
               setClicked({ clicked: !isclicked.clicked, button: '6 heure' })
             }}
           >
@@ -270,22 +306,11 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(0, 12, 0)
               setClicked({ clicked: !isclicked.clicked, button: '12 heure' })
             }}
           >
             12 heures
-          </Button>
-        </div>
-        <div className='col-3'>
-          <Button
-            variant='contained'
-            type='submit'
-            color='primary'
-            onClick={() => {
-              setClicked({ clicked: !isclicked.clicked, button: '24 heure' })
-            }}
-          >
-            24 heures
           </Button>
         </div>
       </div>
@@ -298,6 +323,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(1, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '1 J' })
             }}
           >
@@ -310,6 +336,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(2, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '2 J' })
             }}
           >
@@ -322,6 +349,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(3, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '3 J' })
             }}
           >
@@ -334,6 +362,7 @@ const Actions = () => {
             type='submit'
             color='primary'
             onClick={() => {
+              changeDate(4, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '4 J' })
             }}
           >

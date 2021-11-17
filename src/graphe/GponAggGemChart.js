@@ -58,18 +58,23 @@ const GponAggGem = (props) => {
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
-      olt: currentolt.ObjectName,
+      olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
-      result[0].data.map((value) => {
-        aggobject.series[0].data.push(parseInt(value['Recieve Blocks'] * 0.001))
-        aggobject.series[1].data.push(
-          parseInt(value['Transmit Blocks'] * 0.001)
-        )
+      if (result.length != 0) {
+        console.log('sss', result)
+        result[0].data.map((value) => {
+          aggobject.series[0].data.push(
+            parseInt(value['Recieve Blocks'] * 0.001)
+          )
+          aggobject.series[1].data.push(
+            parseInt(value['Transmit Blocks'] * 0.001)
+          )
 
-        aggobject.options.xaxis.categories.push(value['timestamp'])
-      })
-      setgoptions(aggobject)
+          aggobject.options.xaxis.categories.push(value['timestamp'])
+        })
+        setgoptions(aggobject)
+      }
     })
   }, [])
 

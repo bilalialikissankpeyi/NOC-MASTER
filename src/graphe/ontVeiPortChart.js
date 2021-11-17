@@ -5,15 +5,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
-
-const BridgePort = (props) => {
+const OntVeiPort = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
   const currentont = useSelector((state) => state.currentONT)
   const filtered = useSelector((state) => state.ontFilter)
 
   var [goptions, setgoptions] = React.useState({
-    series: [{}, {}],
+    series: [{}],
     options: {
       color: ['#6ab04c', '#2980b9'],
       chart: {
@@ -60,12 +59,11 @@ const BridgePort = (props) => {
       width: '100%',
     },
   })
-
   React.useEffect(() => {
-    var serv1object = {
+    var operobject = {
       series: [
-        { name: 'Up Fowarded Byte', data: [] },
-        { name: 'Down Fowarded Byte', data: [] },
+        { name: 'interface Administration Status', data: [] },
+        { name: 'interface Operation Status', data: [] },
       ],
       options: {
         color: ['#6ab04c', '#2980b9'],
@@ -75,80 +73,52 @@ const BridgePort = (props) => {
         dataLabels: {
           enabled: false,
         },
-        stroke: {
-          curve: 'smooth',
-        },
         xaxis: {
           type: 'datetime',
         },
-        grid: {
-          show: true,
-        },
-      },
-      chart: {
-        width: '100%',
-      },
-    }
-    var c14P1object = {
-      series: [
-        { name: 'Up Fowarded Byte', data: [] },
-        { name: 'Down Fowarded Byte', data: [] },
-      ],
-      options: {
-        color: ['#6ab04c', '#2980b9'],
-        chart: {
-          background: 'transparent',
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        grid: {
-          show: true,
-        },
-      },
-      chart: {
-        width: '100%',
       },
     }
 
     getTimeFrameData({
-      collection: 'BridgePort',
+      collection: 'OntVeipPort',
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
       olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
-      console.log('resrrr', result)
+      console.log({ VEIP: result })
       result[0].data.map((value) => {
-        if (value.type === 'SERV1') {
-          serv1object.series[0].data.push([
+        if (value['interface Operation Status'] === 'up') {
+          operobject.series[0].data.push([
             new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
+            100,
           ])
-          serv1object.series[1].data.push([
+        } else if (value['interface Operation Status'] === 'down') {
+          operobject.series[0].data.push([
             new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
+            50,
           ])
-        } else if (value.type === 'C14.P1') {
-          c14P1object.series[0].data.push([
+        }
+        if (value['interface Administration Status'] === 'up') {
+          console.log(
+            'timestamp',
+            value['timestamp'],
+            'date',
+            new Date(value['timestamp'])
+          )
+          operobject.series[1].data.push([
             new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
+            200,
           ])
-          c14P1object.series[1].data.push([
+        } else if (value['interface Administration Status'] === 'down') {
+          operobject.series[1].data.push([
             new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
+            150,
           ])
         }
       })
-      setgoptions(serv1object)
-      setg2options(c14P1object)
+      setgoptions(operobject)
     })
   }, [])
 
@@ -156,30 +126,32 @@ const BridgePort = (props) => {
     <>
       {!goptions && !g2options && <Loading />}
       <div className='row'>
-        <div className='col-12'>
+        <div className='col-4'>
           <div className='row'>
             <Chart
               options={goptions.options}
               series={goptions.series}
+              type='line'
               height='500'
-              width='600'
+              width='500'
             />
           </div>
           <div className='row'>
-            <h3>BridgePort Port SERV1</h3>
+            <h3>Etat Operationnel de la Voix</h3>
           </div>
         </div>
-        <div className='col-12'>
+        <div className='col-4'>
           <div className='row'>
-            <Chart
+            {/*      <Chart
               options={g2options.options}
               series={g2options.series}
+              type='line'
               height='500'
-              width='600'
-            />
+              width='500'
+        />*/}
           </div>
           <div className='row'>
-            <h3>BridgePort Port C14 P1 </h3>
+            <h3>Etat Administratif de la voix</h3>
           </div>
         </div>
       </div>
@@ -187,4 +159,4 @@ const BridgePort = (props) => {
   )
 }
 
-export default BridgePort
+export default OntVeiPort

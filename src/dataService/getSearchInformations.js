@@ -42,6 +42,7 @@ export function getTimeFrameData(value) {
   })
 }
 export function getLastData(value) {
+  console.log('value', value)
   var url = 'http://localhost:3001/' + `${value.typeofSearch}`
   return new Promise(async (resolve, reject) => {
     try {
@@ -54,7 +55,11 @@ export function getLastData(value) {
           olt: value.olt,
         },
       })
-      console.log('Last', data.data)
+      console.log(data.data[0].data.length)
+      console.log(data.data[1].data.length)
+      console.log(data.data[2].data.length)
+      console.log(data.data[3].data.length)
+      // console.log('Last', data.data.length)
       resolve(data.data)
     } catch (err) {
       console.log(err)

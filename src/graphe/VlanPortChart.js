@@ -26,7 +26,7 @@ const VlanPort = (props) => {
         curve: 'smooth',
       },
       xaxis: {
-        categories: [],
+        type: 'datetime',
       },
       grid: {
         show: true,
@@ -50,7 +50,7 @@ const VlanPort = (props) => {
         curve: 'smooth',
       },
       xaxis: {
-        categories: [],
+        type: 'datetime',
       },
       grid: {
         show: true,
@@ -74,7 +74,7 @@ const VlanPort = (props) => {
         curve: 'smooth',
       },
       xaxis: {
-        categories: [],
+        type: 'datetime',
       },
       grid: {
         show: true,
@@ -105,7 +105,7 @@ const VlanPort = (props) => {
           curve: 'smooth',
         },
         xaxis: {
-          categories: [],
+          type: 'datetime',
         },
         grid: {
           show: true,
@@ -134,7 +134,7 @@ const VlanPort = (props) => {
           curve: 'smooth',
         },
         xaxis: {
-          categories: [],
+          type: 'datetime',
         },
         grid: {
           show: true,
@@ -163,7 +163,7 @@ const VlanPort = (props) => {
           curve: 'smooth',
         },
         xaxis: {
-          categories: [],
+          type: 'datetime',
         },
         grid: {
           show: true,
@@ -174,56 +174,66 @@ const VlanPort = (props) => {
       },
     }
     getTimeFrameData({
-      collection: 'vlanPort',
+      collection: 'VlanPortAssociation',
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
-      olt: currentolt.ObjectName,
+      olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
+      console.log({ vlan: result })
       result[0].data.map((value) => {
         if (value.vlan === 'C1000') {
-          v1000object.series[0].data.push(
-            parseInt(value['Down Discard Byte'] * 0.001)
-          )
-          v1000object.series[1].data.push(
-            parseInt(value['Up Discard Byte'] * 0.001)
-          )
-          v1000object.series[2].data.push(
-            parseInt(value['Up Foward Byte'] * 0.001)
-          )
-          v1000object.series[3].data.push(
-            parseInt(value['Down Foward Byte'] * 0.001)
-          )
-          v1000object.options.xaxis.categories.push(value['timestamp'])
+          v1000object.series[0].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Discard Byte'] * 0.001),
+          ])
+          v1000object.series[1].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Discard Byte'] * 0.001),
+          ])
+          v1000object.series[2].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Foward Byte'] * 0.001),
+          ])
+          v1000object.series[3].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Foward Byte'] * 0.001),
+          ])
         } else if (value.vlan === 'C3000') {
-          v3000object.series[0].data.push(
-            parseInt(value['Down Discard Byte'] * 0.001)
-          )
-          v3000object.series[1].data.push(
-            parseInt(value['Up Discard Byte'] * 0.001)
-          )
-          v3000object.series[2].data.push(
-            parseInt(value['Up Foward Byte'] * 0.001)
-          )
-          v3000object.series[3].data.push(
-            parseInt(value['Down Foward Byte'] * 0.001)
-          )
-          v3000object.options.xaxis.categories.push(value['timestamp'])
+          v3000object.series[0].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Discard Byte'] * 0.001),
+          ])
+          v3000object.series[1].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Discard Byte'] * 0.001),
+          ])
+          v3000object.series[2].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Foward Byte'] * 0.001),
+          ])
+          v3000object.series[3].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Foward Byte'] * 0.001),
+          ])
         } else if (value.vlan === 'C3001') {
-          v3001object.series[0].data.push(
-            parseInt(value['Down Discard Byte'] * 0.001)
-          )
-          v3001object.series[1].data.push(
-            parseInt(value['Up Discard Byte'] * 0.001)
-          )
-          v3001object.series[2].data.push(
-            parseInt(value['Up Foward Byte'] * 0.001)
-          )
-          v3001object.series[3].data.push(
-            parseInt(value['Down Foward Byte'] * 0.001)
-          )
-          v3001object.options.xaxis.categories.push(value['timestamp'])
+          v3001object.series[0].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Discard Byte'] * 0.001),
+          ])
+          v3001object.series[1].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Discard Byte'] * 0.001),
+          ])
+          v3001object.series[2].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Up Discard Byte'] * 0.001),
+          ])
+          v3001object.series[3].data.push([
+            new Date(value['timestamp']).getTime(),
+            parseInt(value['Down Discard Byte'] * 0.001),
+          ])
         }
       })
 
@@ -237,39 +247,42 @@ const VlanPort = (props) => {
     <>
       {!goptions && !g2options && !g3options && <Loading />}
       <div className='row'>
-        <div className='col-4'>
+        <div className='col-12'>
           <div className='row'>
             <Chart
               options={goptions.options}
               series={goptions.series}
               type='line'
-              height='100%'
+              height='500'
+              width='600'
             />
           </div>
           <div className='row'>
             <h3>Association VLAN 3001/SERV1</h3>
           </div>
         </div>
-        <div className='col-4'>
+        <div className='col-12'>
           <div className='row'>
             <Chart
               options={g2options.options}
               series={g2options.series}
               type='line'
-              height='100%'
+              height='500'
+              width='600'
             />
           </div>
           <div className='row'>
             <h3>Association VLAN 3000/C14 P1</h3>
           </div>
         </div>
-        <div className='col-4'>
+        <div className='col-12'>
           <div className='row'>
             <Chart
               options={g3options.options}
               series={g3options.series}
               type='line'
-              height='100%'
+              height='500'
+              width='600'
             />
           </div>
           <div className='row'>

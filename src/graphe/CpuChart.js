@@ -73,10 +73,12 @@ const CpuChart = (props) => {
       last: props.last,
       olt: props.olt,
     }).then((result) => {
+      console.log('meme', result[0])
       result.map((element) => {
+        console.log({ longuer: element.data.length })
         if (element.data.length != 0) {
           memorieUsageobject.series[0].data.push(
-            element.data[0]['memAbsoluteUsage']
+            element.data[0]['memory Absolute Usage']
           )
           memorieUsageobject.options.xaxis.categories.push(
             element.ObjectID.split(':')[1].split('.')[2]
