@@ -73,61 +73,68 @@ const CpuChart = (props) => {
       last: props.last,
       olt: props.olt,
     }).then((result) => {
-      console.log('meme', result[0])
-      result.map((element) => {
-        console.log({ longuer: element.data.length })
-        if (element.data.length != 0) {
-          memorieUsageobject.series[0].data.push(
-            element.data[0]['memory Absolute Usage']
-          )
-          memorieUsageobject.options.xaxis.categories.push(
-            element.ObjectID.split(':')[1].split('.')[2]
-          )
-          if (element.data[0]['interface Operation Status'] === null) {
-            console.log('resl', result)
-            upOperArray.push({
-              ...element.data[0],
-              ObjectID: element.ObjectID,
-            })
-          } else if (element.data[0]['interface Operation Status'] === 'down') {
-            downOperArray.push({
-              ...element.data[0],
-              ObjectID: element.ObjectID,
-            })
+      if (result.length != 0) {
+        console.log('meme', result[0])
+        result.map((element) => {
+          console.log({ longuer: element.data.length })
+          if (element.data.length != 0) {
+            memorieUsageobject.series[0].data.push(
+              element.data[0]['memory Absolute Usage']
+            )
+            memorieUsageobject.options.xaxis.categories.push(
+              element.ObjectID.split(':')[1].split('.')[2]
+            )
+            if (element.data[0]['interface Operation Status'] === null) {
+              console.log('resl', result)
+              upOperArray.push({
+                ...element.data[0],
+                ObjectID: element.ObjectID,
+              })
+            } else if (
+              element.data[0]['interface Operation Status'] === 'down'
+            ) {
+              downOperArray.push({
+                ...element.data[0],
+                ObjectID: element.ObjectID,
+              })
+            }
           }
-        }
-      })
+        })
 
-      if (upOperArray.length != 0 || downOperArray.length != 0) {
-        console.log({ lonng: upOperArray.length })
-        setg2options({
-          options: {
-            color: ['#6ab04c', '#2980c9'],
-            labels: ['Up', 'Down'],
-            chart: {
-              events: {
-                dataPointSelection: (event, chartContext, config) => {
-                  if (
-                    config.w.config.labels[config.dataPointIndex] === 'null'
-                  ) {
-                    history.push({ pathname: `/Details`, state: upOperArray })
-                  } else if (
-                    config.w.config.labels[config.dataPointIndex] === 'Down'
-                  ) {
-                    history.push({
-                      pathname: `/Details`,
-                      state: downOperArray,
-                    })
-                  }
+        if (upOperArray.length != 0 || downOperArray.length != 0) {
+          console.log({ lonng: upOperArray.length })
+          setg2options({
+            options: {
+              color: ['#6ab04c', '#2980c9'],
+              labels: ['Up', 'Down'],
+              chart: {
+                events: {
+                  dataPointSelection: (event, chartContext, config) => {
+                    if (
+                      config.w.config.labels[config.dataPointIndex] === 'null'
+                    ) {
+                      history.push({
+                        pathname: `/Details`,
+                        state: upOperArray,
+                      })
+                    } else if (
+                      config.w.config.labels[config.dataPointIndex] === 'Down'
+                    ) {
+                      history.push({
+                        pathname: `/Details`,
+                        state: downOperArray,
+                      })
+                    }
+                  },
                 },
               },
             },
-          },
-          series: [upOperArray.length, downOperArray.length],
-        })
+            series: [upOperArray.length, downOperArray.length],
+          })
+        }
+        setgoptions(memorieUsageobject)
+      } else {
       }
-
-      setgoptions(memorieUsageobject)
     })
   }, [])
 

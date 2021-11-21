@@ -104,38 +104,41 @@ const Ont = (props) => {
       olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
-      console.log({ ISAM_ONT: result })
-      result[0].data.map((value) => {
-        if (value['interface Operation Status'] === 'up') {
-          operobject.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            100,
-          ])
-        } else if (value['interface Operation Status'] === 'down') {
-          operobject.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            50,
-          ])
-        }
-        if (value['interface Administration Status'] === 'up') {
-          console.log(
-            'timestamp',
-            value['timestamp'],
-            'date',
-            new Date(value['timestamp'])
-          )
-          operobject.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            200,
-          ])
-        } else if (value['interface Administration Status'] === 'down') {
-          operobject.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            150,
-          ])
-        }
-      })
-      setgoptions(operobject)
+      if (result.length != 0) {
+        console.log({ ISAM_ONT: result })
+        result[0].data.map((value) => {
+          if (value['interface Operation Status'] === 'up') {
+            operobject.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              100,
+            ])
+          } else if (value['interface Operation Status'] === 'down') {
+            operobject.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              50,
+            ])
+          }
+          if (value['interface Administration Status'] === 'up') {
+            console.log(
+              'timestamp',
+              value['timestamp'],
+              'date',
+              new Date(value['timestamp'])
+            )
+            operobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              200,
+            ])
+          } else if (value['interface Administration Status'] === 'down') {
+            operobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              150,
+            ])
+          }
+        })
+        setgoptions(operobject)
+      }
+
       //setg2options(adminobject)
     })
   }, [])

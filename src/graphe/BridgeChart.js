@@ -125,30 +125,34 @@ const BridgePort = (props) => {
       olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
-      console.log('resrrr', result)
-      result[0].data.map((value) => {
-        if (value.type === 'SERV1') {
-          serv1object.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
-          ])
-          serv1object.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
-          ])
-        } else if (value.type === 'C14.P1') {
-          c14P1object.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
-          ])
-          c14P1object.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
-          ])
-        }
-      })
-      setgoptions(serv1object)
-      setg2options(c14P1object)
+      if (result.length != 0) {
+        console.log('resrrr', result)
+        result[0].data.map((value) => {
+          if (value.type === 'SERV1') {
+            serv1object.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Foward Byte'] * 0.001),
+            ])
+            serv1object.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Foward Byte'] * 0.001),
+            ])
+          } else if (value.type === 'C14.P1') {
+            c14P1object.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Foward Byte'] * 0.001),
+            ])
+            c14P1object.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Foward Byte'] * 0.001),
+            ])
+          }
+        })
+
+        setgoptions(serv1object)
+        setg2options(c14P1object)
+      } else {
+      }
     })
   }, [])
 

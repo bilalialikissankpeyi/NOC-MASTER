@@ -1,5 +1,22 @@
 import axios from 'axios'
 
+export function getMultipleEntries(value) {
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log('ddd')
+      var data = await axios.get(url, {
+        params: {
+          collection: `${value.collection}`,
+        },
+      })
+      console.log('ddd', data.data)
+      resolve(data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
 export function getAllList(value) {
   var url = 'http://localhost:3001/' + `${value.typeofSearch}`
   return new Promise(async (resolve, reject) => {
@@ -35,6 +52,24 @@ export function getTimeFrameData(value) {
         },
       })
       console.log('Last', data.data)
+      resolve(data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
+export function getDashBoardLastData(value) {
+  console.log('value', value)
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          collection: `${value.collection}`,
+          last: value.last,
+        },
+      })
+      // console.log('Last', data.data.length)
       resolve(data.data)
     } catch (err) {
       console.log(err)

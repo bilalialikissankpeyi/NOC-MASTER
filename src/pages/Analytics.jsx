@@ -73,21 +73,36 @@ const Analytics = () => {
   return (
     <>
       <div>
-        <div className='row'>
+        <div
+          className='row col-8'
+          style={{
+            margin: '60px',
+          }}
+        >
           <CpuChart
             last={last}
             ObjectName={'MINA-7360FX8:'}
             olt={'MINA-7360FX8'}
           />
         </div>
-        <div className='row'>
+        <div
+          className='row col-8'
+          style={{
+            margin: '60px',
+          }}
+        >
           <PonChart
             last={last}
             ObjectName={'MINA-7360FX8'}
             olt={'MINA-7360FX8'}
           />
         </div>
-        <div className='row'>
+        <div
+          className='row col-8'
+          style={{
+            margin: '60px',
+          }}
+        >
           <UserInformationChart
             last={last}
             ObjectName={'MINA-7360FX8'}
@@ -96,7 +111,14 @@ const Analytics = () => {
         </div>
         <div className='row'>
           <div className='col-6'>
-            <h2 className='page-header'>ONT</h2>
+            <h2
+              className='page-header'
+              style={{
+                margin: '60px',
+              }}
+            >
+              ONT
+            </h2>
           </div>
 
           <div className='col-6'>
@@ -115,23 +137,31 @@ const Analytics = () => {
         </div>
         {!ontInformation && <Loading />}
         <div className='row'>
-          <div className='col-12'>
-            <Table hover bordered limit={10}>
-              <thead>
-                <tr>
-                  <th>ObjectName </th>
-                  <th> CustomerID </th>
-                  <th>DescriptionPart1 </th>
-                  <th> DescriptionPart2 </th>
-                  <th>FamilyType</th>
-                  <th>PlannedUp</th>
-                  <th>PlannedSoftware</th>
-                  <th>SerialNumber</th>
-                  <th> SubscriberLocationID </th>
-                </tr>
-              </thead>
-              <tbody>{ontInformation}</tbody>
-            </Table>
+          <div
+            className='col-12'
+            style={{
+              margin: '60px',
+            }}
+          >
+            <div className='card'>
+              <div className='card__body'></div>
+              <Table hover bordered limit={10}>
+                <thead>
+                  <tr>
+                    <th>ObjectName </th>
+                    <th> CustomerID </th>
+                    <th>DescriptionPart1 </th>
+                    <th> DescriptionPart2 </th>
+                    <th>FamilyType</th>
+                    <th>PlannedUp</th>
+                    <th>PlannedSoftware</th>
+                    <th>SerialNumber</th>
+                    <th> SubscriberLocationID </th>
+                  </tr>
+                </thead>
+                <tbody>{ontInformation}</tbody>
+              </Table>
+            </div>
           </div>
         </div>
       </div>

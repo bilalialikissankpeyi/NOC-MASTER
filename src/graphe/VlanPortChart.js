@@ -181,65 +181,68 @@ const VlanPort = (props) => {
       olt: currentont.ObjectName.split(':')[0],
       ObjectName: currentont.ObjectName,
     }).then((result) => {
-      console.log({ vlan: result })
-      result[0].data.map((value) => {
-        if (value.vlan === 'C1000') {
-          v1000object.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Discard Byte'] * 0.001),
-          ])
-          v1000object.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Discard Byte'] * 0.001),
-          ])
-          v1000object.series[2].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
-          ])
-          v1000object.series[3].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
-          ])
-        } else if (value.vlan === 'C3000') {
-          v3000object.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Discard Byte'] * 0.001),
-          ])
-          v3000object.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Discard Byte'] * 0.001),
-          ])
-          v3000object.series[2].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Foward Byte'] * 0.001),
-          ])
-          v3000object.series[3].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Foward Byte'] * 0.001),
-          ])
-        } else if (value.vlan === 'C3001') {
-          v3001object.series[0].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Discard Byte'] * 0.001),
-          ])
-          v3001object.series[1].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Discard Byte'] * 0.001),
-          ])
-          v3001object.series[2].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Up Discard Byte'] * 0.001),
-          ])
-          v3001object.series[3].data.push([
-            new Date(value['timestamp']).getTime(),
-            parseInt(value['Down Discard Byte'] * 0.001),
-          ])
-        }
-      })
+      if (result.length != 0) {
+        console.log({ vlan: result })
+        result[0].data.map((value) => {
+          if (value.vlan === 'C1000') {
+            v1000object.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Discard Byte'] * 0.001),
+            ])
+            v1000object.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Discard Byte'] * 0.001),
+            ])
+            v1000object.series[2].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Foward Byte'] * 0.001),
+            ])
+            v1000object.series[3].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Foward Byte'] * 0.001),
+            ])
+          } else if (value.vlan === 'C3000') {
+            v3000object.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Discard Byte'] * 0.001),
+            ])
+            v3000object.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Discard Byte'] * 0.001),
+            ])
+            v3000object.series[2].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Foward Byte'] * 0.001),
+            ])
+            v3000object.series[3].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Foward Byte'] * 0.001),
+            ])
+          } else if (value.vlan === 'C3001') {
+            v3001object.series[0].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Discard Byte'] * 0.001),
+            ])
+            v3001object.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Discard Byte'] * 0.001),
+            ])
+            v3001object.series[2].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Up Discard Byte'] * 0.001),
+            ])
+            v3001object.series[3].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt(value['Down Discard Byte'] * 0.001),
+            ])
+          }
+        })
 
-      setgoptions(v1000object)
-      setg2options(v3000object)
-      setg3options(v3001object)
+        setgoptions(v1000object)
+        setg2options(v3000object)
+        setg3options(v3001object)
+      } else {
+      }
     })
   }, [])
 

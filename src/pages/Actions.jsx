@@ -21,6 +21,8 @@ import Hour from './OneHour'
 
 import Fifteen from './FifteenMinutes'
 
+import { Container, Row, Col } from 'react-bootstrap'
+
 const Actions = () => {
   let type = null
   const fifteen = ['BridgePort', 'ONTAggGem', 'vlanPort']
@@ -132,10 +134,9 @@ const Actions = () => {
   return (
     <div>
       <h2 className='page-header'>Time Selection</h2>
-
       {/*Premiere Ligne */}
       <div className='row'>
-        <div className='col-3'>
+        <div className='col-2'>
           <form onSubmit={onsubmit}>
             <div className='row'>
               <Grid container justify='space-between'>
@@ -149,6 +150,7 @@ const Actions = () => {
                     fontWeight: 'bold',
                     width: '200px',
                     borderRadius: '13px',
+                    margin: '25px',
                   }}
                 >
                   {timeOptions}
@@ -157,53 +159,57 @@ const Actions = () => {
             </div>
           </form>
         </div>
-        <div className='col-3'>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DateTimePicker
-              /*disableToolbar*/
-              variant='inline'
-              format='MM/dd/yyy HH:mm'
-              margin='normal'
-              id='date-picker'
-              label='Start Time'
-              value={startDate}
-              onChange={handleStartDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
+        <div className='col-9'>
+          <div className='row'>
+            <Grid container justify='space-around'>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DateTimePicker
+                  /*disableToolbar*/
+                  variant='inline'
+                  format='MM/dd/yyy HH:mm'
+                  margin='normal'
+                  id='date-picker'
+                  label='Start Time'
+                  value={startDate}
+                  onChange={handleStartDate}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DateTimePicker
+                  /*disableToolbar*/
+                  variant='inline'
+                  format='dd/MM/yyyy HH:mm'
+                  margin='normal'
+                  id='date-picker'
+                  label='End Time'
+                  value={endDate}
+                  onChange={handleEndDate}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </div>
         </div>
-        <div className='col-3'>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DateTimePicker
-              /*disableToolbar*/
-              variant='inline'
-              format='dd/MM/yyyy HH:mm'
-              margin='normal'
-              id='date-picker'
-              label='End Time'
-              value={endDate}
-              onChange={handleEndDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
-        </div>
-        <div className='col-3'>
-          <Button
-            variant='contained'
-            type='submit'
-            color='primary'
-            onClick={() => {
-              setClicked({ clicked: !isclicked.clicked, button: 'search' })
-            }}
-          >
-            Search{' '}
-          </Button>
-        </div>
+
+        <Button
+          variant='contained'
+          type='submit'
+          color='primary'
+          style={{ height: '50px', width: '100px', paddingTop: '12px' }}
+          padding='10px 10px'
+          onClick={() => {
+            setClicked({ clicked: !isclicked.clicked, button: 'search' })
+          }}
+        >
+          Search{' '}
+        </Button>
       </div>
+
       {/*deuxieme Ligne 15 min*/}
       <div className='row'>
         <div className='col-3'>
@@ -211,6 +217,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(0, 0, 15)
               setClicked({ clicked: !isclicked.clicked, button: '15 Min' })
@@ -224,6 +234,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(0, 0, 30)
               setClicked({ clicked: !isclicked.clicked, button: '30 Min' })
@@ -237,6 +251,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(0, 0, 45)
               setClicked({ clicked: !isclicked.clicked, button: '45 Min' })
@@ -250,6 +268,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(0, 1, 0)
               setClicked({ clicked: !isclicked.clicked, button: '4x15 Min' })
@@ -259,6 +281,7 @@ const Actions = () => {
           </Button>
         </div>
       </div>
+
       {/*troisieme Ligne heure */}
       <div className='row'>
         <div className='col-3'>
@@ -266,6 +289,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(0, 1, 0)
               setClicked({ clicked: !isclicked.clicked, button: '1 heure' })
@@ -279,6 +306,9 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+            }}
             onClick={() => {
               changeDate(0, 3, 0)
               setClicked({ clicked: !isclicked.clicked, button: '3 heure' })
@@ -292,6 +322,9 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+            }}
             onClick={() => {
               changeDate(0, 6, 0)
               setClicked({ clicked: !isclicked.clicked, button: '6 heure' })
@@ -305,6 +338,9 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+            }}
             onClick={() => {
               changeDate(0, 12, 0)
               setClicked({ clicked: !isclicked.clicked, button: '12 heure' })
@@ -322,6 +358,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(1, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '1 J' })
@@ -335,6 +375,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(2, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '2 J' })
@@ -348,6 +392,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(3, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '3 J' })
@@ -361,6 +409,10 @@ const Actions = () => {
             variant='contained'
             type='submit'
             color='primary'
+            style={{
+              margin: '10px',
+              width: '100px',
+            }}
             onClick={() => {
               changeDate(4, 0, 0)
               setClicked({ clicked: !isclicked.clicked, button: '4 J' })
@@ -372,14 +424,31 @@ const Actions = () => {
       </div>
 
       {/*Resultat */}
-      <div className='row' style={{ marginTop: '100px' }}>
+      <div
+        className='row col-9'
+        style={{
+          marginTop: '3px',
+          padding: '12pX',
+          margin: '210px',
+        }}
+      >
         {!isclicked.clicked ? (
           <div className='card full-height'>
             <h3>Fill All Required Information First</h3>
           </div>
         ) : (
           <>
-            <div className='row'>
+            <div
+              className='row col-3'
+              style={{
+                marginTop: '10px',
+                padding: '12pX',
+                marginBottom: '30px',
+                alignItems: 'center',
+                alignContent: 'center',
+                textAlign: 'right',
+              }}
+            >
               {isclicked.button.includes('heure') ? (
                 <Hour
                   clicked={isclicked.button}
@@ -391,6 +460,12 @@ const Actions = () => {
                   clicked={isclicked.button}
                   start={startDate}
                   end={endDate}
+                  style={{
+                    width: '300px',
+                    height: '200px',
+                  }}
+                  display='flex'
+                  justifyContent='space-between'
                 />
               ) : isclicked.button.includes('Min') ? (
                 <Fifteen
