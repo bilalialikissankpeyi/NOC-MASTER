@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
+import { Card } from 'react-bootstrap'
 
 const GponAggGem = (props) => {
   const dispatch = useDispatch()
@@ -26,7 +27,7 @@ const GponAggGem = (props) => {
         curve: 'smooth',
       },
       xaxis: {
-        categories: [],
+        type: 'datetime',
       },
     },
     chart: {
@@ -48,7 +49,7 @@ const GponAggGem = (props) => {
           enabled: false,
         },
         xaxis: {
-          categories: [],
+          type: 'datetime',
         },
       },
     }
@@ -64,14 +65,14 @@ const GponAggGem = (props) => {
       if (result.length != 0) {
         console.log('sss', result)
         result[0].data.map((value) => {
-          aggobject.series[0].data.push(
-            parseInt(value['Recieve Blocks'] * 0.001)
-          )
-          aggobject.series[1].data.push(
-            parseInt(value['Transmit Blocks'] * 0.001)
-          )
-
-          aggobject.options.xaxis.categories.push(value['timestamp'])
+          aggobject.series[0].data.push([
+            value['timestamp'],
+            parseInt(value['Recieve Blocks'] * 0.008),
+          ])
+          aggobject.series[1].data.push([
+            value['timestamp'],
+            parseInt(value['Transmit Blocks'] * 0.008),
+          ])
         })
         setgoptions(aggobject)
       }
@@ -81,19 +82,22 @@ const GponAggGem = (props) => {
   return (
     <>
       {!goptions && <Loading />}
-      <div className='col-6'>
-        <div className='row'>
-          <Chart
-            options={goptions.options}
-            series={goptions.series}
-            type='line'
-            height='100%'
-          />
-        </div>
-        <div className='row'>
-          <h3>ONT AggGem </h3>
-        </div>
-      </div>
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}, {}] ? (
+            <Loading />
+          ) : (
+            <Chart
+              options={goptions.options}
+              series={goptions.series}
+              height='500'
+              width='600'
+              type='line'
+            />
+          )}
+          <h3>ONT Aggregation Gem </h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }
