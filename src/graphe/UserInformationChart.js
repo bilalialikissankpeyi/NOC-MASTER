@@ -44,17 +44,15 @@ var UserInformation = (props) => {
   var upOperArray = []
   var downOperArray = []
   React.useEffect(() => {
-    if (!props.ObjectName && !props.olt) {
+    if (props.ObjectName == undefined && props.olt == undefined) {
       getDashBoardLastData({
         typeofSearch: 'getDashBoardLastData',
         collection: 'ISAM_ONT',
         last: props.last,
       }).then((result) => {
         if (result.length != 0) {
-          console.log({
-            virm: result[0].data[0]['interface Administration Status'],
-          })
-          result.map((element) => {
+          console.log('longuer user', result.length)
+          result.map((element, y) => {
             if (element.data.length != 0) {
               if (element.data[0]['interface Administration Status'] === 'up') {
                 upAdminArray.push({
@@ -83,6 +81,9 @@ var UserInformation = (props) => {
                   ObjectID: element.ObjectID,
                 })
               }
+            } else {
+              if (result.length - 1 == y)
+                alert('aucune information disponible ')
             }
           })
 
@@ -265,22 +266,30 @@ var UserInformation = (props) => {
       <div className='col-6'>
         <h3>Statut Administratif des Utilisateurs</h3>
         {!goptions && <Loading />}
-        <Chart
-          options={goptions.options}
-          series={goptions.series}
-          type='pie'
-          width='380'
-        />
+        {goptions.series === [5, 10] ? (
+          <Loading />
+        ) : (
+          <Chart
+            options={goptions.options}
+            series={goptions.series}
+            type='pie'
+            width='380'
+          />
+        )}
       </div>
       <div className='col-6'>
         <h3>Statut Operationnel des Utilisateurs</h3>
         {!g2options && <Loading />}
-        <Chart
-          options={g2options.options}
-          series={g2options.series}
-          type='pie'
-          width='380'
-        />
+        {g2options.series === [5, 10] ? (
+          <Loading />
+        ) : (
+          <Chart
+            options={g2options.options}
+            series={g2options.series}
+            type='pie'
+            width='380'
+          />
+        )}
       </div>
     </>
   )

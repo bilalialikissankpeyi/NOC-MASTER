@@ -7,7 +7,7 @@ import {
   getLastData,
   getDashBoardLastData,
 } from '../dataService/getSearchInformations'
-
+import { Card } from 'react-bootstrap'
 import Loading from '../graphe/Loading'
 const PonChart = (props) => {
   const history = useHistory()
@@ -44,13 +44,16 @@ const PonChart = (props) => {
   var downOperArray = []
 
   React.useEffect(() => {
-    if (!props.ObjectName && !props.olt) {
+    if (props.ObjectName == undefined && props.olt == undefined) {
+      console.log('cc')
       getDashBoardLastData({
         typeofSearch: 'getDashBoardLastData',
         collection: 'Pon',
         last: props.last,
       }).then((result) => {
+        console.log('oui oui', result)
         if (result.length != 0) {
+          console.log('oui oui', result.length)
           result.map((element) => {
             if (element.data.length != 0) {
               if (element.data[0]['interface Administration Status'] === 'up') {
@@ -260,23 +263,32 @@ const PonChart = (props) => {
   }, [])
   return (
     <>
-      <div className='col-6'>
-        <h3>Statut des Pon Administrativement</h3>
-        <Chart
-          options={g2options.options}
-          series={g2options.series}
-          type='pie'
-          width='380'
-        />
-      </div>
-      <div className='col-6'>
-        <h3>Statut des Pon Operationnels</h3>
-        <Chart
-          options={g3options.options}
-          series={g3options.series}
-          type='pie'
-          width='380'
-        />
+      <div className='row'>
+        <Card className='col-5' style={{ marginRight: '30px' }}>
+          <Card.Body>
+            <h3>Statut des Pon Administrativement</h3>
+            {!g2options && <Loading />}
+            <Chart
+              options={g2options.options}
+              series={g2options.series}
+              type='pie'
+              width='380'
+            />
+          </Card.Body>
+        </Card>
+
+        <Card className='col-5' style={{ marginLeft: '60px' }}>
+          <Card.Body>
+            <h3>Statut des Pon Operationnels</h3>
+            {!g3options && <Loading />}
+            <Chart
+              options={g3options.options}
+              series={g3options.series}
+              type='pie'
+              width='380'
+            />
+          </Card.Body>
+        </Card>
       </div>
     </>
   )

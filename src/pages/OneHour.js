@@ -4,6 +4,7 @@ import OntEthPort from '../graphe/OntEthPortChart'
 import OntVeiPort from '../graphe/ontVeiPortChart'
 import VlanPort from '../graphe/VlanPortChart'
 import Ont from '../graphe/OntChart'
+import { Card } from 'react-bootstrap'
 
 const Hour = (props) => {
   var [start, setStart] = React.useState(props.start)
@@ -11,12 +12,12 @@ const Hour = (props) => {
   var [end, setEnd] = React.useState(props.end)
   React.useEffect(() => {}, [])
   return (
-    <div className='col-12'>
+    <>
       {start && end && <Loading />}
       <div className='row'>
-        <div className='row'>
-          <h3>Statut de L'ONT</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Statut de L'ONT</Card.Body>
+        </Card>
         <Ont
           start={start}
           end={end}
@@ -30,9 +31,9 @@ const Hour = (props) => {
       </div>
 
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur La voix</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur La voix</Card.Body>
+        </Card>
         <OntVeiPort
           start={start}
           end={end}
@@ -46,9 +47,9 @@ const Hour = (props) => {
       </div>
 
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur les Ports de L'ONT</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur les Ports de L'ONT</Card.Body>
+        </Card>
         <OntEthPort
           start={start}
           end={end}
@@ -62,9 +63,9 @@ const Hour = (props) => {
       </div>
 
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur l'Association vlan et Port</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur l'Association vlan et Port</Card.Body>
+        </Card>
         <VlanPort
           start={start}
           end={end}
@@ -76,7 +77,7 @@ const Hour = (props) => {
           }}
         />
       </div>
-    </div>
+    </>
   )
 }
 

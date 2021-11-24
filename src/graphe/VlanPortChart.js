@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
+import { Card } from 'react-bootstrap'
 
 const VlanPort = (props) => {
   const dispatch = useDispatch()
@@ -219,6 +220,7 @@ const VlanPort = (props) => {
               parseInt(value['Down Foward Byte'] * 0.001),
             ])
           } else if (value.vlan === 'C3001') {
+            console.log(3001)
             v3001object.series[0].data.push([
               new Date(value['timestamp']).getTime(),
               parseInt(value['Down Discard Byte'] * 0.001),
@@ -237,10 +239,10 @@ const VlanPort = (props) => {
             ])
           }
         })
-
-        setgoptions(v1000object)
+        console.log('length 3000', v3001object.series)
+        setgoptions(v3001object)
         setg2options(v3000object)
-        setg3options(v3001object)
+        setg3options(v1000object)
       } else {
       }
     })
@@ -249,50 +251,56 @@ const VlanPort = (props) => {
   return (
     <>
       {!goptions && !g2options && !g3options && <Loading />}
-      <div className='row'>
-        <div className='col-12'>
-          <div className='row'>
+
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}, {}] ? (
+            <Loading />
+          ) : (
             <Chart
               options={goptions.options}
               series={goptions.series}
-              type='line'
               height='500'
               width='600'
+              type='line'
             />
-          </div>
-          <div className='row'>
-            <h3>Association VLAN 3001/SERV1</h3>
-          </div>
-        </div>
-        <div className='col-12'>
-          <div className='row'>
+          )}
+          <h3>Association VLAN 3001/SERV1</h3>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          {g2options.series === [] ? (
+            <Loading />
+          ) : (
             <Chart
               options={g2options.options}
               series={g2options.series}
-              type='line'
               height='500'
               width='600'
+              type='line'
             />
-          </div>
-          <div className='row'>
-            <h3>Association VLAN 3000/C14 P1</h3>
-          </div>
-        </div>
-        <div className='col-12'>
-          <div className='row'>
+          )}
+          <h3>Association VLAN 3000/C14 P1</h3>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          {' '}
+          {g3options.series === [] ? (
+            <Loading />
+          ) : (
             <Chart
               options={g3options.options}
               series={g3options.series}
-              type='line'
               height='500'
               width='600'
+              type='line'
             />
-          </div>
-          <div className='row'>
-            <h3>Association VLAN 3000/C14 P1</h3>
-          </div>
-        </div>
-      </div>
+          )}
+          <h3>Association VLAN 1000/C14 P1</h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }

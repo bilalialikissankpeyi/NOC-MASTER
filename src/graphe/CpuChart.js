@@ -143,21 +143,29 @@ const CpuChart = (props) => {
       {!goptions && !g2options && <Loading />}
       <div className='col-6'>
         <h3>Utilisateur Actif sur l'ensemble des Cartes</h3>
-        <Chart
-          options={g2options.options}
-          series={g2options.series}
-          type='pie'
-          width='380'
-        />
+        {g2options.series === [7, 10] ? (
+          <Loading />
+        ) : (
+          <Chart
+            options={g2options.options}
+            series={g2options.series}
+            type='pie'
+            width='380'
+          />
+        )}
       </div>
       <div className='col-6'>
         <h3>Utilisation de la Memoire</h3>
-        <Chart
-          options={goptions.options}
-          series={goptions.series}
-          type='bar'
-          width='500'
-        />
+        {goptions.series[0].data === [1145, 1133, 2000, 1010, 2310] ? (
+          <Loading />
+        ) : (
+          <Chart
+            options={goptions.options}
+            series={goptions.series}
+            type='bar'
+            width='500'
+          />
+        )}
       </div>
     </>
   )

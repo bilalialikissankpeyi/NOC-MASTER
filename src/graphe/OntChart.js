@@ -6,6 +6,8 @@ import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
 
+import { Card } from 'react-bootstrap'
+
 const Ont = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
@@ -36,30 +38,7 @@ const Ont = (props) => {
       width: '100%',
     },
   })
-  var [g2options, setg2options] = React.useState({
-    series: [],
-    options: {
-      color: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+
   React.useEffect(() => {
     var operobject = {
       series: [
@@ -138,17 +117,17 @@ const Ont = (props) => {
         })
         setgoptions(operobject)
       }
-
-      //setg2options(adminobject)
     })
   }, [])
 
   return (
     <>
-      {!goptions && !g2options && <Loading />}
-      <div className='row'>
-        <div className='col-4'>
-          <div className='row'>
+      {!goptions && <Loading />}
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}] ? (
+            <Loading />
+          ) : (
             <Chart
               options={goptions.options}
               series={goptions.series}
@@ -156,26 +135,10 @@ const Ont = (props) => {
               height='500'
               width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>Etat Operationnel de l'ONT</h3>
-          </div>
-        </div>
-        <div className='col-4'>
-          <div className='row'>
-            {/* <Chart
-              options={g2options.options}
-              series={g2options.series}
-              type='line'
-              height='500'
-              width='600'
-            />*/}
-          </div>
-          <div className='row'>
-            <h3>Etat Administratif de l'ONT</h3>
-          </div>
-        </div>
-      </div>
+          )}
+          <h3>Etat Operationnel et Administreatif de l'ONT</h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }

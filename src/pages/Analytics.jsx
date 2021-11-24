@@ -20,7 +20,7 @@ import UserInformationChart from '../graphe/UserInformationChart'
 const Analytics = () => {
   const [ontInformation, setOntInformation] = React.useState([])
 
-  var date = new Date('13 December 2021 06:00 UTC')
+  var date = new Date('13 November 2021 05:00 UTC')
   var last = new Date(date.toISOString())
   //var last = new Date('2021-11-15T22:00:00.885Z')
   const dispatch = useDispatch()

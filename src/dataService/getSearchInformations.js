@@ -10,8 +10,11 @@ export function getMultipleEntries(value) {
           collection: `${value.collection}`,
         },
       })
-      console.log('ddd', data.data)
-      resolve(data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -28,8 +31,11 @@ export function getAllList(value) {
           query: `${value.query}`,
         },
       })
-      console.log('ddd', data.data)
-      resolve(data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -51,8 +57,12 @@ export function getTimeFrameData(value) {
           olt: value.olt,
         },
       })
-      console.log('Last', data.data)
-      resolve(data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        console.log('here', data.data)
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -69,8 +79,12 @@ export function getDashBoardLastData(value) {
           last: value.last,
         },
       })
-      // console.log('Last', data.data.length)
-      resolve(data.data)
+      console.log('voila', data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -90,12 +104,12 @@ export function getLastData(value) {
           olt: value.olt,
         },
       })
-      console.log(data.data[0].data.length)
-      console.log(data.data[1].data.length)
-      console.log(data.data[2].data.length)
-      console.log(data.data[3].data.length)
-      // console.log('Last', data.data.length)
-      resolve(data.data)
+
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -114,7 +128,11 @@ export function getSearched(collection, value, typeofSearch) {
               serialNumber: value.serialNumber,
             },
           })
-          resolve(data.data)
+          if (data.data == undefined) {
+            alert('Pas de resultat pour les utilisateurs recherchés ')
+          } else {
+            resolve(data.data)
+          }
         } catch (err) {
           console.log(err)
         }
@@ -131,7 +149,11 @@ export function getSearched(collection, value, typeofSearch) {
               olt: value.olt,
             },
           })
-          resolve(data.data)
+          if (data.data == undefined) {
+            alert('Pas de resultat pour cette recherche ')
+          } else {
+            resolve(data.data)
+          }
         } catch (err) {
           console.log(err)
         }

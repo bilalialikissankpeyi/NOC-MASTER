@@ -1,6 +1,7 @@
 import React from 'react'
 import { getTimeFrameData } from '../dataService/getSearchInformations'
 
+import { Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
@@ -35,30 +36,7 @@ const OntVeiPort = (props) => {
       width: '100%',
     },
   })
-  var [g2options, setg2options] = React.useState({
-    series: [],
-    options: {
-      color: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+
   React.useEffect(() => {
     var operobject = {
       series: [
@@ -127,37 +105,23 @@ const OntVeiPort = (props) => {
 
   return (
     <>
-      {!goptions && !g2options && <Loading />}
-      <div className='row'>
-        <div className='col-4'>
-          <div className='row'>
+      {!goptions && <Loading />}
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}] ? (
+            <Loading />
+          ) : (
             <Chart
               options={goptions.options}
               series={goptions.series}
               type='line'
               height='500'
-              width='500'
+              width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>Etat Operationnel de la Voix</h3>
-          </div>
-        </div>
-        <div className='col-4'>
-          <div className='row'>
-            {/*      <Chart
-              options={g2options.options}
-              series={g2options.series}
-              type='line'
-              height='500'
-              width='500'
-        />*/}
-          </div>
-          <div className='row'>
-            <h3>Etat Administratif de la voix</h3>
-          </div>
-        </div>
-      </div>
+          )}
+          <h3>Etat Operationnel et Administratif de la Voix</h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
-
+import { Card } from 'react-bootstrap'
 const BridgePort = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
@@ -159,34 +159,36 @@ const BridgePort = (props) => {
   return (
     <>
       {!goptions && !g2options && <Loading />}
-      <div className='row'>
-        <div className='col-12'>
-          <div className='row'>
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}, {}] ? (
+            <Loading />
+          ) : (
             <Chart
               options={goptions.options}
               series={goptions.series}
               height='500'
               width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>BridgePort Port SERV1</h3>
-          </div>
-        </div>
-        <div className='col-12'>
-          <div className='row'>
+          )}
+          <h3>BridgePort Port SERV1</h3>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          {g2options.series === [] ? (
+            <Loading />
+          ) : (
             <Chart
               options={g2options.options}
               series={g2options.series}
               height='500'
               width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>BridgePort Port C14 P1 </h3>
-          </div>
-        </div>
-      </div>
+          )}
+          <h3>BridgePort Port C14 P1 </h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }

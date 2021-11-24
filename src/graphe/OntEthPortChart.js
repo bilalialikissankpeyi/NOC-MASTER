@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
-
+import { Card } from 'react-bootstrap'
 const OntEthPort = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
@@ -187,40 +187,42 @@ const OntEthPort = (props) => {
   return (
     <>
       {!goptions && !g2options && <Loading />}
-      <div className='row'>
-        <div className='col-4'>
-          <div className='row'>
+      <Card>
+        <Card.Body>
+          {goptions.series === [{}] ? (
+            <Loading />
+          ) : (
             <Chart
               options={goptions.options}
               series={goptions.series}
               type='line'
               height='500'
-              width='500'
+              width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>
-              Etat Operationnel Et Administratif des Ports P1 et P2 de l'ONT
-            </h3>
-          </div>
-        </div>
-        <div className='col-4'>
-          <div className='row'>
+          )}
+          <h3>
+            Etat Operationnel Et Administratif des Ports P1 et P2 de l'ONT
+          </h3>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          {g2options.series === [] ? (
+            <Loading />
+          ) : (
             <Chart
               options={g2options.options}
               series={g2options.series}
               type='line'
               height='500'
-              width='500'
+              width='600'
             />
-          </div>
-          <div className='row'>
-            <h3>
-              Etat Operationnel Et Administratif des Ports P3 et P4 de l'ONT
-            </h3>
-          </div>
-        </div>
-      </div>
+          )}
+          <h3>
+            Etat Operationnel Et Administratif des Ports P3 et P4 de l'ONT
+          </h3>
+        </Card.Body>
+      </Card>
     </>
   )
 }

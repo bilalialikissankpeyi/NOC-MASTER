@@ -3,6 +3,7 @@ import Loading from '../graphe/Loading'
 import BridgePort from '../graphe/BridgeChart'
 import GponAggGem from '../graphe/GponAggGemChart'
 import VlanPort from '../graphe/VlanPortChart'
+import { Card } from 'react-bootstrap'
 const Fifteen = (props) => {
   var [start, setStart] = React.useState(props.start)
   //new Date('2021-10-14T07:32:00.885Z')
@@ -13,9 +14,9 @@ const Fifteen = (props) => {
     <div className='col-12'>
       {!start && !end && <Loading />}
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur le Bridge Port</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur le Bridge Port</Card.Body>
+        </Card>
         <BridgePort
           start={start}
           end={end}
@@ -29,9 +30,9 @@ const Fifteen = (props) => {
       </div>
 
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur l'aggregation</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur l'aggregation</Card.Body>
+        </Card>
         <GponAggGem
           start={start}
           end={end}
@@ -45,9 +46,9 @@ const Fifteen = (props) => {
       </div>
 
       <div className='row'>
-        <div className='row'>
-          <h3>Information sur le vlan Port</h3>
-        </div>
+        <Card style={{ color: '#6ab04c' }}>
+          <Card.Body>Information sur le vlan Port</Card.Body>
+        </Card>
         <VlanPort
           start={start}
           end={end}
