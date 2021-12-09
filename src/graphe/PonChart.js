@@ -8,11 +8,15 @@ import {
   getDashBoardLastData,
 } from '../dataService/getSearchInformations'
 import { Card } from 'react-bootstrap'
-import Loading from '../graphe/Loading'
+import Loading from './Loading'
+import { useSelector, useDispatch } from 'react-redux'
 const PonChart = (props) => {
+  const currentolt = useSelector((state) => state.currentOLT)
+
   const history = useHistory()
   var [g2options, setg2options] = React.useState({
     options: {
+      colors: ['#ff8000', '#40ff00'],
       labels: ['Down', 'Up'],
       chart: {
         events: {
@@ -26,6 +30,7 @@ const PonChart = (props) => {
   })
   var [g3options, setg3options] = React.useState({
     options: {
+      colors: ['#ff8000', '#40ff00'],
       labels: ['Down', 'Up'],
       chart: {
         events: {
@@ -46,43 +51,55 @@ const PonChart = (props) => {
   React.useEffect(() => {
     if (props.ObjectName == undefined && props.olt == undefined) {
       console.log('cc')
-      getDashBoardLastData({
-        typeofSearch: 'getDashBoardLastData',
+      getTimeFrameData({
         collection: 'Pon',
-        last: props.last,
+        typeOfSearch: 'getTimeFrameData',
+        start: props.start,
+        end: props.end,
+        olt: currentolt.ObjectName,
+        ObjectName: currentolt.ObjectName,
       }).then((result) => {
         console.log('oui oui', result)
         if (result.length != 0) {
           console.log('oui oui', result.length)
+          var AdmincounterUp = []
+          var AdmincounterDown = []
+          var OpercounterUp = []
+          var OpercounterDown = []
           result.map((element) => {
             if (element.data.length != 0) {
-              if (element.data[0]['interface Administration Status'] === 'up') {
-                upAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Administration Status'] === 'down'
-              ) {
-                downAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-
-              if (element.data[0]['interface Operation Status'] === 'up') {
-                upOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Operation Status'] === 'down'
-              ) {
-                downOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
+              element.data.map((subelement, index) => {
+                if (subelement['interface Administration Status'] == 'up') {
+                  if (AdmincounterUp[index] == undefined) {
+                    AdmincounterUp.push(1)
+                  } else {
+                    AdmincounterUp[index] += 1
+                  }
+                  //adminup++
+                } else {
+                  if (AdmincounterDown[index] == undefined) {
+                    AdmincounterDown.push(1)
+                  } else {
+                    AdmincounterDown[index] += 1
+                  }
+                  //admindown++
+                }
+                if (subelement['interface Operation Status'] == 'up') {
+                  if (OpercounterUp[index] == undefined) {
+                    OpercounterUp.push(1)
+                  } else {
+                    OpercounterUp[index] += 1
+                  }
+                  //adminup++
+                } else {
+                  if (OpercounterDown[index] == undefined) {
+                    OpercounterDown.push(1)
+                  } else {
+                    OpercounterDown[index] += 1
+                  }
+                  //admindown++
+                }
+              })
             }
           })
 
