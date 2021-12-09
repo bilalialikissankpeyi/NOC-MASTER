@@ -15,7 +15,7 @@ const OntVeiPort = (props) => {
   var [goptions, setgoptions] = React.useState({
     series: [{}],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9'],
       chart: {
         background: 'transparent',
       },
@@ -36,15 +36,22 @@ const OntVeiPort = (props) => {
       width: '100%',
     },
   })
-
+  var [isveip, setVeip] = React.useState(false)
   React.useEffect(() => {
+    props.render.map((element) => {
+      switch (element) {
+        case 'Etat de la carte virtuelle':
+          setVeip(true)
+          break
+      }
+    })
     var operobject = {
       series: [
         { name: 'interface Administration Status', data: [] },
         { name: 'interface Operation Status', data: [] },
       ],
       options: {
-        color: ['#6ab04c', '#2980b9'],
+        colors: ['#6ab04c', '#2980b9'],
         chart: {
           background: 'transparent',
         },
@@ -76,7 +83,7 @@ const OntVeiPort = (props) => {
           } else if (value['interface Operation Status'] === 'down') {
             operobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              50,
+              0,
             ])
           }
           if (value['interface Administration Status'] === 'up') {
@@ -88,12 +95,12 @@ const OntVeiPort = (props) => {
             )
             operobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              200,
+              100,
             ])
           } else if (value['interface Administration Status'] === 'down') {
             operobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              150,
+              0,
             ])
           }
         })
@@ -106,22 +113,26 @@ const OntVeiPort = (props) => {
   return (
     <>
       {!goptions && <Loading />}
-      <Card>
-        <Card.Body>
-          {goptions.series === [{}] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={goptions.options}
-              series={goptions.series}
-              type='line'
-              height='500'
-              width='600'
-            />
-          )}
-          <h3>Etat Operationnel et Administratif de la Voix</h3>
-        </Card.Body>
-      </Card>
+      {isveip == true ? (
+        <Card>
+          <Card.Body>
+            {goptions.series === [{}] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={goptions.options}
+                series={goptions.series}
+                type='line'
+                height='500'
+                width='600'
+              />
+            )}
+            <h3>Etat Operationnel et Administratif de la carte virtuelle</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
     </>
   )
 }

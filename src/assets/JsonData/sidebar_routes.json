@@ -11,7 +11,7 @@
   },
   {
     "display_name": "Données Historiques",
-    "route": "/actions",
+    "route": "/actionsONT",
     "icon": "bx bx-cart"
   },
   {

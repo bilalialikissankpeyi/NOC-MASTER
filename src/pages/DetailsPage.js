@@ -15,20 +15,23 @@ const Details = (props) => {
   console.log({ curentoool: currentolt })
   const history = useHistory()
   const gotToOlt = (element) => {
-    dispatch(currentONT(element))
-    dispatch(loadData(element.SerialNumber))
-    history.push(`/actions`)
+    if (element.SerialNumber != undefined) {
+      dispatch(currentONT(element))
+      dispatch(loadData(element.SerialNumber))
+      history.push(`/actions`)
+    } else {
+      alert('Informations Insuffisante Pour Analyser le Trafic')
+    }
   }
   React.useEffect(() => {
     var items = []
-    console.log({ props: props.location.state })
+    console.log('props.states', props.location.state[0])
     props.location.state.map((element) => {
       var item = []
-      for (var key in element) {
-        if (key !== '_id' && key !== 'olt' && key !== 'timestamp') {
-          item.push(<td>{element[key]}</td>)
-        }
-      }
+      item.push(<td>{element['ObjectID']}</td>)
+      item.push(<td>{element['interface Administration Status']}</td>)
+      item.push(<td>{element['interface Operation Status']}</td>)
+      item.push(<td>{element['olt']}</td>)
       items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
     })
     setDetails_list(items)
@@ -38,12 +41,10 @@ const Details = (props) => {
     <Table hover bordered limit={10}>
       <thead>
         <tr>
-          <th>bponOntEquipId</th>
-          <th> bponOntSerialNumber</th>
-          <th>bponOntSubscriberId1</th>
-          <th>bponOntSubscriberLocId</th>
+          <th>Network Level ID</th>
           <th>interface Administration Status</th>
           <th>interface Operation Status</th>
+          <th>OLT</th>
         </tr>
       </thead>
       <tbody>{details_list}</tbody>

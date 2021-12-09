@@ -13,7 +13,9 @@ import { Table } from 'reactstrap'
 
 import data from '../assets/models/data.json'
 
-import PerformancePanel from '../graphe//PerformancePanel'
+import PerformancePanel from '../graphe/PerformancePanel'
+
+import DisplayKpis from './DisplayKpisONT'
 
 import Day from './OneDay'
 
@@ -21,84 +23,51 @@ import Hour from './OneHour'
 
 import Fifteen from './FifteenMinutes'
 
-import { Card } from 'react-bootstrap'
+import { Card, InputGroup, FormControl } from 'react-bootstrap'
 
 const Actions = () => {
-  let type = null
-  const fifteen = ['BridgePort', 'ONTAggGem', 'vlanPort']
-  const oneHour = [
-    ' Uni',
-    'Pon',
-    'OntVeipPort',
-    ' OntEthPort',
-    'Ont',
-    'EthernetLineSlot',
-    'CpuUsage',
-    'EthernetPort',
-    'vlanPortAssociation',
+  const kpiList = [
+    'Debit IN/OUT',
+    'Volume IN/OUT',
+    'Perte IN/OUT',
+    'ONT Aggregation Gem',
+    "Etat de l'ONT",
+    "Etat des Ports P1 et P2 de l'ONT",
+    "Etat des Ports P3 et P4 de l'ONT",
+    'Etat de la carte virtuelle',
+    'Debit IN/OUT Trafic de Management',
+    'Debit IN/OUT Trafic de Voix',
+    'Debit IN/OUT Trafic de Internet',
+    'Volume IN/OUT Trafic de Management',
+    'Volume IN/OUT Trafic de Voix',
+    'Volume IN/OUT Trafic de Internet',
+    'Perte IN/OUT Trafic de Management',
+    'Perte IN/OUT Trafic de Voix',
+    'Perte IN/OUT Trafic de Internet',
   ]
-  const oneDay = ['vlanPortAssociation']
 
-  var [items, setItems] = useState([])
-  var [options, setOptions] = useState([])
+  const [checkedState, setCheckedState] = useState(
+    new Array(kpiList.length).fill(false)
+  )
+
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    )
+    setCheckedState(updatedCheckedState)
+  }
+
   const [isclicked, setClicked] = useState({ clicked: false, button: 'search' })
-  const [timeSelected, setTimeSelected] = useState('15Minutes')
 
   const [startDate, setStartDate] = useState(
-    new Date('2021-10-14T06:30:00.885Z')
+    new Date('13 November 2021 00:00 UTC').toISOString()
   )
-  const [endDate, setEndDate] = useState(new Date('2021-10-14T08:30:00.885Z'))
+  const [endDate, setEndDate] = useState(
+    new Date('13 November 2021 05:00 UTC').toISOString()
+  )
   const dispatch = useDispatch()
   const searchTerm = useSelector((state) => state.searched)
   const searchedData = useSelector((state) => state.searchInTime)
-  const [itemclicked, setItemClicked] = React.useState({
-    clicked: false,
-    key: '',
-  })
-
-  React.useEffect(() => {
-    switch (timeSelected) {
-      case '15Minutes':
-        type = fifteen
-        break
-      case '1heure':
-        type = oneHour
-        break
-      case '24heure':
-        type = oneDay
-        break
-      default:
-    }
-    if (type) {
-      console.log('thyp', type)
-      setOptions(type.map((el) => <option key={el}>{el}</option>))
-    }
-  }, [timeSelected])
-  React.useEffect(() => {
-    switch (timeSelected) {
-      case '15Minutes':
-        break
-      case '1heure':
-        break
-      case '24heure':
-        break
-      default:
-    }
-    if (type) {
-      setOptions(type.map((el) => <option key={el}>{el}</option>))
-    }
-  }, [isclicked.clicked])
-  new Date('2021-08-03-11T12:00:00')
-
-  const timeSelectOptionHandler = (e) => {
-    setTimeSelected(e.target.value)
-  }
-
-  const timeOptions = [
-    <option>15Minutes</option>,
-    <option>1heure</option>,
-    <option>24heure</option>,
-  ]
 
   const handleStartDate = (date) => {
     setStartDate(date)
@@ -107,58 +76,48 @@ const Actions = () => {
   const handleEndDate = (date) => {
     setEndDate(date)
   }
-  const onsubmit = (e) => {
-    const data = {
-      startdate: this.state.setSelectDate,
-      enddate: this.state.setCheckOutDate,
-    }
-    e.preventDefault()
-  }
-
-  const changeDate = (day, hour, min) => {
-    //setEndDate(new Date(2021, 10, 13, 0, 0, 0))
-    //setStartDate(new Date(2021, 10, 13 - day, 0 - hour, 0 - min, 0))
-    var start = new Date('13 December 2021 01:00 UTC')
-    var end = new Date('13 December 2021 02:02: UTC')
-    console.log(
-      'start',
-      new Date(end.toISOString()),
-      'end',
-      new Date(start.toISOString())
-    )
-    setEndDate(new Date('13 November 2021 05:00 UTC'))
-    setStartDate(new Date('13 November 2021 00:00 UTC'))
-    // console.log(new Date().toUTCString())
-  }
 
   return (
     <div>
       {/*Premiere Ligne */}
       <Card>
         <Card.Body>
+          <Card.Text>Trafic ONT </Card.Text>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          <>
+            <ul className='toppings-list'>
+              {kpiList.map((kpi, index) => {
+                return (
+                  <li key={index}>
+                    <div className='toppings-list-item'>
+                      <div className='left-section'>
+                        <input
+                          type='checkbox'
+                          id={`custom-checkbox-${index}`}
+                          name={kpi}
+                          value={kpi}
+                          checked={checkedState[index]}
+                          onChange={() => handleOnChange(index)}
+                        />
+                        <label htmlFor={`custom-checkbox-${index}`}>
+                          {kpi}
+                        </label>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
           <div className='row'>
-            <div className='col-3'>
-              <form onSubmit={onsubmit}>
-                <Grid container justify='space-between'>
-                  <select
-                    onChange={timeSelectOptionHandler}
-                    className='select-timeperiod'
-                    style={{
-                      padding: '20px',
-                      borderBottom: '1px solid gray',
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      width: '200px',
-                      borderRadius: '13px',
-                      margin: '25px',
-                    }}
-                  >
-                    {timeOptions}
-                  </select>
-                </Grid>
-              </form>
-            </div>
-            <div className='col-6'>
+            <div className='col-9'>
               <Grid container justify='space-around'>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DateTimePicker
@@ -209,9 +168,36 @@ const Actions = () => {
           </div>
         </Card.Body>
       </Card>
-      <Card>
-        <Card.Body>
-          {/*deuxieme Ligne 15 min*/}
+      {/*Resultat */}
+      <div
+        className='row col-9'
+        style={{
+          marginTop: '3px',
+          paddingRigth: '30pX',
+        }}
+      >
+        {!isclicked.clicked ? (
+          <div className='card full-height'>
+            <h3>Fill All Required Information First</h3>
+          </div>
+        ) : (
+          <>
+            <DisplayKpis
+              kpisList={kpiList}
+              checkedState={checkedState}
+              start={startDate}
+              end={endDate}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default Actions
+
+/* {/*deuxieme Ligne 15 min}
           <div className='row'>
             <div className='col-3'>
               <Button
@@ -286,7 +272,7 @@ const Actions = () => {
             </div>
           </div>
 
-          {/*troisieme Ligne heure */}
+          {/*troisieme Ligne heure }
           <div className='row'>
             <div className='col-3'>
               <Button
@@ -358,7 +344,7 @@ const Actions = () => {
             </div>
           </div>
 
-          {/*quatrieme Ligne J*/}
+          {/*quatrieme Ligne J}
           <div className='row'>
             <div className='col-3'>
               <Button
@@ -428,25 +414,67 @@ const Actions = () => {
                 4 J
               </Button>
             </div>
-          </div>
-        </Card.Body>
-      </Card>
+          </div>*/
+/*<InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>BridgePort Port SERV1</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>BridgePort Port C14 P1</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>ONT Aggregation Gem</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>
+                Etat Operationnel et Administreatif de l'ONT
+              </InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>
+                Etat Operationnel Et Administratif des Ports P1 et P2 de l'ONT
+              </InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>
+                Etat Operationnel Et Administratif des Ports P3 et P4 de l'ONT
+              </InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>
+                Etat Operationnel et Administratif de la Voix
+              </InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>Association VLAN 3001/SERV1</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>Association VLAN 3000/C14 P1</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Checkbox aria-label='Checkbox for following text input' />
+              <InputGroup.Text>Association VLAN 1000/C14 P1</InputGroup.Text>
+              <FormControl aria-label='Text input with checkbox' />
+            </InputGroup>*/
 
-      {/*Resultat */}
-      <div
-        className='row col-9'
-        style={{
-          marginTop: '3px',
-          paddingRigth: '30pX',
-        }}
-      >
-        {!isclicked.clicked ? (
-          <div className='card full-height'>
-            <h3>Fill All Required Information First</h3>
-          </div>
-        ) : (
-          <>
-            <div
+/*<div
               className='row col-3'
               style={{
                 marginTop: '10px',
@@ -500,12 +528,4 @@ const Actions = () => {
                   end={endDate}
                 />
               )}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
-
-export default Actions
+            </div>*/

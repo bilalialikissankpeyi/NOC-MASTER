@@ -1,11 +1,21 @@
 import React from 'react'
 import { getTimeFrameData } from '../dataService/getSearchInformations'
-
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
 import { Card } from 'react-bootstrap'
+import {
+  ManagDebInOutobject,
+  ManagVolInOutobject,
+  ManagPerInOutobject,
+  IntDebInOutobject,
+  IntVolInOutobject,
+  IntPerInOutobject,
+  VoDebInOutobject,
+  VoVolInOutobject,
+  VoPerInOutobject,
+} from './Options/vlanOpt'
 
 const VlanPort = (props) => {
   const dispatch = useDispatch()
@@ -13,167 +23,215 @@ const VlanPort = (props) => {
   const currentont = useSelector((state) => state.currentONT)
   const filtered = useSelector((state) => state.ontFilter)
 
-  var [goptions, setgoptions] = React.useState({
-    series: [{}, {}],
+  //Internet
+  var [gIntDebInOutobject, setgIntDebInOutobject] = React.useState({
+    series: [
+      { name: 'Debit IN', data: [] },
+      { name: 'Debit OUT', data: [] },
+    ],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
       chart: {
         background: 'transparent',
       },
       dataLabels: {
         enabled: false,
       },
-      stroke: {
-        curve: 'smooth',
-      },
       xaxis: {
-        type: 'datetime',
+        categories: [],
       },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
     },
   })
-  var [g2options, setg2options] = React.useState({
-    series: [],
+  var [gIntVolInOutobject, setgIntVolInOutobject] = React.useState({
+    series: [
+      { name: 'Volume IN', data: [] },
+      { name: 'Volume OUT', data: [] },
+    ],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
       chart: {
         background: 'transparent',
       },
       dataLabels: {
         enabled: false,
       },
-      stroke: {
-        curve: 'smooth',
-      },
       xaxis: {
-        type: 'datetime',
+        categories: [],
       },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
     },
   })
-  var [g3options, setg3options] = React.useState({
-    series: [],
+  var [gIntPerInOutobject, setgIntPerInOutobject] = React.useState({
+    series: [
+      { name: 'Perte IN', data: [] },
+      { name: 'Perte OUT', data: [] },
+    ],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
       chart: {
         background: 'transparent',
       },
       dataLabels: {
         enabled: false,
       },
-      stroke: {
-        curve: 'smooth',
-      },
       xaxis: {
-        type: 'datetime',
+        categories: [],
       },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
     },
   })
+  //Management
+  var [gManagDebInOutobject, setgManagDebInOutobject] = React.useState({
+    series: [
+      { name: 'Debit IN', data: [] },
+      { name: 'Debit OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  var [gManagVolInOutobject, setgManagVolInOutobject] = React.useState({
+    series: [
+      { name: 'Volume IN', data: [] },
+      { name: 'Volume OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  var [gManagPerInOutobject, setgManagPerInOutobject] = React.useState({
+    series: [
+      { name: 'Perte IN', data: [] },
+      { name: 'Perte OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  //Voix
+  var [gVoDebInOutobject, setgVoDebInOutobject] = React.useState({
+    series: [
+      { name: 'Debit IN', data: [] },
+      { name: 'Debit OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  var [gVoVolInOutobject, setgVoVolInOutobject] = React.useState({
+    series: [
+      { name: 'Volume IN', data: [] },
+      { name: 'Volume OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  var [gVoPerInOutobject, setgVoPerInOutobject] = React.useState({
+    series: [
+      { name: 'Perte IN', data: [] },
+      { name: 'Perte OUT', data: [] },
+    ],
+    options: {
+      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+      chart: {
+        background: 'transparent',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [],
+      },
+    },
+  })
+  //Bool d'affichage
+  var [debInOutManag, setDebInOutManag] = React.useState(false)
+  var [debInOutInt, setDebInOutInt] = React.useState(false)
+  var [debInOutVo, setDebInOutVo] = React.useState(false)
+  var [volInOutManag, setVolInOutManag] = React.useState(false)
+  var [volInOutInt, setVolInOutInt] = React.useState(false)
+  var [volInOutVo, setVolInOutVo] = React.useState(false)
+  var [perInOutManag, setPerInOutManag] = React.useState(false)
+  var [perInOutInt, setPerInOutInt] = React.useState(false)
+  var [perInOutVo, setPerInOutVo] = React.useState(false)
 
   React.useEffect(() => {
-    var v1000object = {
-      series: [
-        { name: 'Down Discard Byte', data: [] },
-        { name: 'Up Discard Byte', data: [] },
-        { name: 'Up Foward Byte', data: [] },
-        { name: 'Down Foward Byte', data: [] },
-      ],
-      options: {
-        color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-        chart: {
-          background: 'transparent',
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        grid: {
-          show: true,
-        },
-      },
-      chart: {
-        width: '100%',
-      },
-    }
-    var v3000object = {
-      series: [
-        { name: 'Down Discard Byte', data: [] },
-        { name: 'Up Discard Byte', data: [] },
-        { name: 'Up Foward Byte', data: [] },
-        { name: 'Down Foward Byte', data: [] },
-      ],
-      options: {
-        color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-        chart: {
-          background: 'transparent',
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        grid: {
-          show: true,
-        },
-      },
-      chart: {
-        width: '100%',
-      },
-    }
-    var v3001object = {
-      series: [
-        { name: 'Down Discard Byte', data: [] },
-        { name: 'Up Discard Byte', data: [] },
-        { name: 'Up Foward Byte', data: [] },
-        { name: 'Down Foward Byte', data: [] },
-      ],
-      options: {
-        color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-        chart: {
-          background: 'transparent',
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        grid: {
-          show: true,
-        },
-      },
-      chart: {
-        width: '100%',
-      },
-    }
+    props.render.map((element) => {
+      switch (element) {
+        case 'Debit IN/OUT Trafic Management':
+          setDebInOutManag(true)
+          break
+        case 'Debit IN/OUT Trafic Voix':
+          setDebInOutVo(true)
+          break
+        case 'Debit IN/OUT Trafic Internet':
+          setDebInOutInt(true)
+          break
+        case 'Volume IN/OUT Trafic Management':
+          setVolInOutManag(true)
+          break
+        case 'Volume IN/OUT Trafic Voix':
+          setVolInOutVo(true)
+          break
+        case 'Volume IN/OUT Trafic Internet':
+          setVolInOutInt(true)
+          break
+        case 'Perte IN/OUT Trafic Management':
+          setPerInOutManag(true)
+          break
+        case 'Perte IN/OUT Trafic Voix':
+          setPerInOutVo(true)
+          break
+        case 'Perte IN/OUT Trafic Internet':
+          setPerInOutInt(true)
+          break
+      }
+    })
+
     getTimeFrameData({
       collection: 'VlanPortAssociation',
       typeOfSearch: 'getTimeFrameData',
@@ -186,121 +244,312 @@ const VlanPort = (props) => {
         console.log({ vlan: result })
         result[0].data.map((value) => {
           if (value.vlan === 'C1000') {
-            v1000object.series[0].data.push([
+            //Up values
+            IntDebInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (900 * 1024 * 1024)),
             ])
-            v1000object.series[1].data.push([
+            IntVolInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (1024 * 1024)),
             ])
-            v1000object.series[2].data.push([
+            IntPerInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Foward Byte'] * 0.001),
+              parseInt((value['Up Discard Byte'] * 8) / (1024 * 1024)),
             ])
-            v1000object.series[3].data.push([
+            //Down values
+            IntDebInOutobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Foward Byte'] * 0.001),
+              parseInt((value['Down Foward Byte'] * 8) / (900 * 1024 * 1024)),
+            ])
+            IntVolInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Foward Byte'] * 8) / (1024 * 1024)),
+            ])
+            IntPerInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Discard Byte'] * 8) / (1024 * 1024)),
             ])
           } else if (value.vlan === 'C3000') {
-            v3000object.series[0].data.push([
+            //Up values
+            VoDebInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (900 * 1024 * 1024)),
             ])
-            v3000object.series[1].data.push([
+            VoVolInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (1024 * 1024)),
             ])
-            v3000object.series[2].data.push([
+            VoPerInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Foward Byte'] * 0.001),
+              parseInt((value['Up Discard Byte'] * 8) / (1024 * 1024)),
             ])
-            v3000object.series[3].data.push([
+            //Down values
+            VoDebInOutobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Foward Byte'] * 0.001),
+              parseInt((value['Down Foward Byte'] * 8) / (900 * 1024 * 1024)),
+            ])
+            VoVolInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Foward Byte'] * 8) / (1024 * 1024)),
+            ])
+            VoPerInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Discard Byte'] * 8) / (1024 * 1024)),
             ])
           } else if (value.vlan === 'C3001') {
-            console.log(3001)
-            v3001object.series[0].data.push([
+            //Up values
+            ManagDebInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (900 * 1024 * 1024)),
             ])
-            v3001object.series[1].data.push([
+            ManagVolInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Discard Byte'] * 0.001),
+              parseInt((value['Up Foward Byte'] * 8) / (1024 * 1024)),
             ])
-            v3001object.series[2].data.push([
+            ManagPerInOutobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Up Discard Byte'] * 0.001),
+              parseInt((value['Up Discard Byte'] * 8) / (1024 * 1024)),
             ])
-            v3001object.series[3].data.push([
+            //Down values
+            ManagDebInOutobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(value['Down Discard Byte'] * 0.001),
+              parseInt((value['Down Foward Byte'] * 8) / (900 * 1024 * 1024)),
             ])
+            ManagVolInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Foward Byte'] * 8) / (1024 * 1024)),
+            ])
+            ManagPerInOutobject.series[1].data.push([
+              new Date(value['timestamp']).getTime(),
+              parseInt((value['Down Discard Byte'] * 8) / (1024 * 1024)),
+            ])
+          } else {
+            alert('Information Non Traite')
           }
         })
-        console.log('length 3000', v3001object.series)
-        setgoptions(v3001object)
-        setg2options(v3000object)
-        setg3options(v1000object)
+        //Setting in Internet
+        setgIntDebInOutobject(IntDebInOutobject)
+        setgIntVolInOutobject(IntVolInOutobject)
+        setgIntPerInOutobject(IntPerInOutobject)
+        //Setting in Voix
+        setgVoDebInOutobject(VoDebInOutobject)
+        setgVoVolInOutobject(VoVolInOutobject)
+        setgVoPerInOutobject(VoPerInOutobject)
+        //Setting in Management
+        setgManagDebInOutobject(ManagDebInOutobject)
+        setgManagVolInOutobject(ManagVolInOutobject)
+        setgManagPerInOutobject(ManagPerInOutobject)
       } else {
+        alert('')
       }
     })
   }, [])
 
   return (
     <>
-      {!goptions && !g2options && !g3options && <Loading />}
+      {!gManagPerInOutobject &&
+        !gIntPerInOutobject &&
+        !gVoPerInOutobject &&
+        !gManagDebInOutobject &&
+        !gIntDebInOutobject &&
+        !gVoDebInOutobject &&
+        !gManagVolInOutobject &&
+        !gIntVolInOutobject &&
+        !gVoVolInOutobject && <Loading />}
 
-      <Card>
-        <Card.Body>
-          {goptions.series === [{}, {}] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={goptions.options}
-              series={goptions.series}
-              height='500'
-              width='600'
-              type='line'
-            />
-          )}
-          <h3>Association VLAN 3001/SERV1</h3>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          {g2options.series === [] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={g2options.options}
-              series={g2options.series}
-              height='500'
-              width='600'
-              type='line'
-            />
-          )}
-          <h3>Association VLAN 3000/C14 P1</h3>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          {' '}
-          {g3options.series === [] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={g3options.options}
-              series={g3options.series}
-              height='500'
-              width='600'
-              type='line'
-            />
-          )}
-          <h3>Association VLAN 1000/C14 P1</h3>
-        </Card.Body>
-      </Card>
+      {/*graphe Perte*/}
+      {perInOutManag == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gManagPerInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gManagPerInOutobject.options}
+                series={gManagPerInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Perte de Paquet VLAN Management</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {perInOutVo == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gVoPerInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gVoPerInOutobject.options}
+                series={gVoPerInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Perte de Paquet VLAN Voix</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {perInOutInt == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gIntPerInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gIntPerInOutobject.options}
+                series={gIntPerInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Perte de Paquet VLAN Internet</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {/**Graphe Debit */}
+      {debInOutManag == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gManagDebInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gManagDebInOutobject.options}
+                series={gManagDebInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Debit du Trafic sur VLAN de Management</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {debInOutVo == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gVoDebInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gVoDebInOutobject.options}
+                series={gVoDebInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Debit du Trafic sur le VLAN Voix</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {debInOutInt == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gIntDebInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gIntDebInOutobject.options}
+                series={gIntDebInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Debit du Trafic VLAN Internet</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {/*Graphe Volume */}
+      {volInOutManag == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gManagVolInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gManagVolInOutobject.options}
+                series={gManagVolInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Volume du Trafic sur VLAN de Management</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {volInOutVo == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gVoVolInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gVoVolInOutobject.options}
+                series={gVoVolInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Volume du Trafic sur le VLAN Voix</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {volInOutInt == true ? (
+        <Card>
+          <Card.Body>
+            {' '}
+            {gIntVolInOutobject.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={gIntVolInOutobject.options}
+                series={gIntVolInOutobject.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>Volume du Trafic sur le VLAN Internet</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
     </>
   )
 }

@@ -11,7 +11,7 @@ import TotalOlt from '../DashBoardCompoent/TotalOlt'
 import TotalPon from '../DashBoardCompoent/TotalPon'
 import './Dashboard.css'
 
-import PonChart from '../graphe/PonChart'
+import PonChartDash from '../graphe/PonChartDash'
 
 import UserInformationChart from '../graphe/UserInformationChart'
 
@@ -19,7 +19,7 @@ import parse from 'parse'
 //ALCLB2F6B123
 
 const Dashboard = () => {
-  var date = new Date('13 November 2021 05:00 UTC')
+  var date = new Date('13 November 2021 06:00 UTC')
   var last = new Date(date.toISOString())
   React.useEffect(async () => {
     parse.initialize('myAppId', '', 'myMsterKey')
@@ -57,7 +57,7 @@ const Dashboard = () => {
               margin: '60px',
             }}
           >
-            <PonChart last={last} />
+            <PonChartDash last={last} />
           </div>
           <div
             className='row col-8'

@@ -36,7 +36,7 @@ const Analytics = () => {
 
   React.useEffect(() => {
     console.log('fffffff', currentolt.ObjectName)
-    if (filtered != '') {
+    if (filtered != 'no') {
       getAllList({
         typeofSearch: 'getRelatedONT',
         collection: 'ONT_INFO',

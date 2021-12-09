@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import { getLastData } from '../dataService/getSearchInformations'
 
-import Loading from '../graphe/Loading'
+import Loading from './Loading'
 const CpuChart = (props) => {
   const history = useHistory()
   var [g2options, setg2options] = React.useState({

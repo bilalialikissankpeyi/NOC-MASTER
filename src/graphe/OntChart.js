@@ -17,7 +17,7 @@ const Ont = (props) => {
   var [goptions, setgoptions] = React.useState({
     series: [{}],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9'],
       chart: {
         background: 'transparent',
       },
@@ -38,15 +38,23 @@ const Ont = (props) => {
       width: '100%',
     },
   })
-
+  var [isOnt, setOnt] = React.useState(false)
   React.useEffect(() => {
+    props.render.map((element) => {
+      switch (element) {
+        case "Etat de l'ONT":
+          setOnt(true)
+          break
+      }
+    })
+
     var operobject = {
       series: [
         { name: 'interface Administration Status', data: [] },
         { name: 'interface Operation Status', data: [] },
       ],
       options: {
-        color: ['#6ab04c', '#2980b9'],
+        colors: ['#6ab04c', '#2980b9'],
         chart: {
           background: 'transparent',
         },
@@ -59,21 +67,6 @@ const Ont = (props) => {
       },
     }
 
-    var adminobject = {
-      series: [{ name: 'interface Operation Status', data: [] }],
-      options: {
-        color: ['#6ab04c', '#2980b9'],
-        chart: {
-          background: 'transparent',
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        xaxis: {
-          categories: [],
-        },
-      },
-    }
     console.log('avant', currentont.ObjectName, 'olt', currentolt.ObjectName)
     getTimeFrameData({
       collection: 'ISAM_ONT',
@@ -94,24 +87,7 @@ const Ont = (props) => {
           } else if (value['interface Operation Status'] === 'down') {
             operobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              50,
-            ])
-          }
-          if (value['interface Administration Status'] === 'up') {
-            console.log(
-              'timestamp',
-              value['timestamp'],
-              'date',
-              new Date(value['timestamp'])
-            )
-            operobject.series[1].data.push([
-              new Date(value['timestamp']).getTime(),
-              200,
-            ])
-          } else if (value['interface Administration Status'] === 'down') {
-            operobject.series[1].data.push([
-              new Date(value['timestamp']).getTime(),
-              150,
+              0,
             ])
           }
         })
@@ -123,22 +99,26 @@ const Ont = (props) => {
   return (
     <>
       {!goptions && <Loading />}
-      <Card>
-        <Card.Body>
-          {goptions.series === [{}] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={goptions.options}
-              series={goptions.series}
-              type='line'
-              height='500'
-              width='600'
-            />
-          )}
-          <h3>Etat Operationnel et Administreatif de l'ONT</h3>
-        </Card.Body>
-      </Card>
+      {isOnt == true ? (
+        <Card>
+          <Card.Body>
+            {goptions.series === [{}] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={goptions.options}
+                series={goptions.series}
+                type='line'
+                height='500'
+                width='600'
+              />
+            )}
+            <h3>Etat Operationnel de l'ONT</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
     </>
   )
 }

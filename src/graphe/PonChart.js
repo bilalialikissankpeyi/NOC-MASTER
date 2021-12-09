@@ -3,10 +3,7 @@ import Chart from 'react-apexcharts'
 
 import { useHistory } from 'react-router-dom'
 
-import {
-  getLastData,
-  getDashBoardLastData,
-} from '../dataService/getSearchInformations'
+import { getTimeFrameData } from '../dataService/getSearchInformations'
 import { Card } from 'react-bootstrap'
 import Loading from './Loading'
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,40 +12,116 @@ const PonChart = (props) => {
 
   const history = useHistory()
   var [g2options, setg2options] = React.useState({
-    options: {
-      colors: ['#ff8000', '#40ff00'],
-      labels: ['Down', 'Up'],
-      chart: {
-        events: {
-          dataPointSelection: (event, chartContext, config) => {
-            console.log(config.w.config.labels[config.dataPointIndex])
+    series: [{}],
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+      toolbar: {
+        show: true,
+      },
+      zoom: {
+        enabled: true,
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: 'bottom',
+            offsetX: -10,
+            offsetY: 0,
           },
         },
       },
-    },
-    series: [5, 12],
-  })
-  var [g3options, setg3options] = React.useState({
-    options: {
-      colors: ['#ff8000', '#40ff00'],
-      labels: ['Down', 'Up'],
-      chart: {
-        events: {
-          dataPointSelection: (event, chartContext, config) => {
-            console.log(config.w.config.labels[config.dataPointIndex])
-          },
-        },
+    ],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        borderRadius: 10,
       },
     },
-    series: [8, 10],
+    title: {
+      text: 'Pon',
+    },
+    xaxis: {
+      type: 'datetime',
+      categories: [],
+    },
+    yaxis: {
+      title: {
+        text: undefined,
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    legend: {
+      position: 'right',
+      offsetY: 40,
+    },
   })
-
-  var upAdminArray = []
-  var downAdminArray = []
-  var upOperArray = []
-  var downOperArray = []
 
   React.useEffect(() => {
+    var firstsobject = {
+      series: [
+        { name: 'Up Operation Status', data: [] },
+        { name: 'Up Admin Status', data: [] },
+        { name: 'Down Operation Status', data: [] },
+        { name: 'Down Admin Status', data: [] },
+        { name: 'Capacite', data: [] },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: true,
+        toolbar: {
+          show: true,
+        },
+        zoom: {
+          enabled: true,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          borderRadius: 10,
+        },
+      },
+      title: {
+        text: 'Pon',
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: [],
+      },
+      yaxis: {
+        title: {
+          text: undefined,
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      legend: {
+        position: 'right',
+        offsetY: 40,
+      },
+    }
+
     if (props.ObjectName == undefined && props.olt == undefined) {
       console.log('cc')
       getTimeFrameData({
@@ -66,214 +139,47 @@ const PonChart = (props) => {
           var AdmincounterDown = []
           var OpercounterUp = []
           var OpercounterDown = []
+          var categories = []
           result.map((element) => {
             if (element.data.length != 0) {
               element.data.map((subelement, index) => {
+                if (OpercounterUp[index] == undefined) {
+                  OpercounterUp.push(0)
+                }
+                if (OpercounterDown[index] == undefined) {
+                  OpercounterDown.push(0)
+                  categories.push(new Date(subelement['timestamp']).getTime())
+                }
+                if (AdmincounterUp[index] == undefined) {
+                  AdmincounterUp.push(0)
+                }
+                if (AdmincounterDown[index] == undefined) {
+                  AdmincounterDown.push(0)
+                }
                 if (subelement['interface Administration Status'] == 'up') {
-                  if (AdmincounterUp[index] == undefined) {
-                    AdmincounterUp.push(1)
-                  } else {
-                    AdmincounterUp[index] += 1
-                  }
+                  AdmincounterUp[index] += 1
                   //adminup++
                 } else {
-                  if (AdmincounterDown[index] == undefined) {
-                    AdmincounterDown.push(1)
-                  } else {
-                    AdmincounterDown[index] += 1
-                  }
+                  AdmincounterDown[index] += 1
                   //admindown++
                 }
+
                 if (subelement['interface Operation Status'] == 'up') {
-                  if (OpercounterUp[index] == undefined) {
-                    OpercounterUp.push(1)
-                  } else {
-                    OpercounterUp[index] += 1
-                  }
+                  OpercounterUp[index] += 1
                   //adminup++
                 } else {
-                  if (OpercounterDown[index] == undefined) {
-                    OpercounterDown.push(1)
-                  } else {
-                    OpercounterDown[index] += 1
-                  }
+                  OpercounterDown[index] += 1
                   //admindown++
                 }
               })
             }
           })
-
-          if (upOperArray.length != 0 || downOperArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg2options({
-              options: {
-                color: ['#6ab04c', '#2980c9'],
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upOperArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downOperArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upOperArray.length, downOperArray.length],
-            })
-          }
-
-          if (upAdminArray.length != 0 || downAdminArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg3options({
-              options: {
-                color: ['#2980b9', '#2980b6'],
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upAdminArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downAdminArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upAdminArray.length, downAdminArray.length],
-            })
-          }
-        } else {
-        }
-      })
-    } else {
-      getLastData({
-        typeofSearch: 'getLastData',
-        collection: 'Pon',
-        ObjectName: props.ObjectName,
-        last: props.last,
-        olt: props.olt,
-      }).then((result) => {
-        if (result.length != 0) {
-          result.map((element) => {
-            if (element.data.length != 0) {
-              if (element.data[0]['interface Administration Status'] === 'up') {
-                upAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Administration Status'] === 'down'
-              ) {
-                downAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-
-              if (element.data[0]['interface Operation Status'] === 'up') {
-                upOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Operation Status'] === 'down'
-              ) {
-                downOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-            }
-          })
-
-          if (upOperArray.length != 0 || downOperArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg2options({
-              options: {
-                color: ['#6ab04c', '#2980c9'],
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upOperArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downOperArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upOperArray.length, downOperArray.length],
-            })
-          }
-
-          if (upAdminArray.length != 0 || downAdminArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg3options({
-              options: {
-                color: ['#2980b9', '#2980b6'],
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upAdminArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downAdminArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upAdminArray.length, downAdminArray.length],
-            })
-          }
-        } else {
+          firstsobject.series[0].data.concat(OpercounterUp)
+          firstsobject.series[1].data.concat(AdmincounterUp)
+          firstsobject.series[2].data.concat(OpercounterDown)
+          firstsobject.series[3].data.concat(AdmincounterDown)
+          firstsobject.xaxis.categories.push(categories)
+          setg2options(firstsobject)
         }
       })
     }
@@ -281,27 +187,14 @@ const PonChart = (props) => {
   return (
     <>
       <div className='row'>
-        <Card className='col-5' style={{ marginRight: '30px' }}>
+        <Card>
           <Card.Body>
-            <h3>Statut des Pon Administrativement</h3>
+            <h3>Etat du foncionement des PON</h3>
             {!g2options && <Loading />}
             <Chart
               options={g2options.options}
               series={g2options.series}
-              type='pie'
-              width='380'
-            />
-          </Card.Body>
-        </Card>
-
-        <Card className='col-5' style={{ marginLeft: '60px' }}>
-          <Card.Body>
-            <h3>Statut des Pon Operationnels</h3>
-            {!g3options && <Loading />}
-            <Chart
-              options={g3options.options}
-              series={g3options.series}
-              type='pie'
+              type='bar'
               width='380'
             />
           </Card.Body>

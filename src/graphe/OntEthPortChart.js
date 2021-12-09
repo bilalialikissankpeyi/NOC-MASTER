@@ -15,7 +15,7 @@ const OntEthPort = (props) => {
   var [goptions, setgoptions] = React.useState({
     series: [{}],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9'],
       chart: {
         background: 'transparent',
       },
@@ -39,7 +39,7 @@ const OntEthPort = (props) => {
   var [g2options, setg2options] = React.useState({
     series: [],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9'],
       chart: {
         background: 'transparent',
       },
@@ -60,8 +60,19 @@ const OntEthPort = (props) => {
       width: '100%',
     },
   })
-
+  var [isOper, setOper] = React.useState(false)
+  var [isAdmin, setAdmin] = React.useState(false)
   React.useEffect(() => {
+    props.render.map((element) => {
+      switch (element) {
+        case "Etat des Ports P1 et P2 de l'ONT":
+          setOper(true)
+          break
+        case "Etat des Ports P3 et P4 de l'ONT":
+          setAdmin(true)
+          break
+      }
+    })
     var firstsobject = {
       series: [
         { name: 'interface Administration Status C1P1', data: [] },
@@ -71,7 +82,7 @@ const OntEthPort = (props) => {
         { name: 'interface Operation Status C1P2', data: [] },
       ],
       options: {
-        color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+        colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
         chart: {
           background: 'transparent',
         },
@@ -92,7 +103,7 @@ const OntEthPort = (props) => {
         { name: 'interface Operation Status C1P4', data: [] },
       ],
       options: {
-        color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
+        colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
         chart: {
           background: 'transparent',
         },
@@ -115,65 +126,32 @@ const OntEthPort = (props) => {
       if (result.length) {
         console.log({ EthPort: result })
         result[0].data.map((value) => {
-          //Carte 1 et 2 Administrativement Up et Down
-          if (value['type'] === 'C1.P1') {
-            firstsobject.options.xaxis.categories.push(value['timestamp'])
-            if (value['interface Administration Status'] === 'up') {
-              firstsobject.series[0].data.push(parseInt(100))
-            } else if (value['interface Administration Status'] === 'down') {
-              firstsobject.series[0].data.push(parseInt(50))
-            }
-          } else if (value['type'] === 'C1.P2') {
-            firstsobject.options.xaxis.categories.push(value['timestamp'])
-            if (value['interface Administration Status'] === 'up') {
-              firstsobject.series[1].data.push(parseInt(200))
-            } else if (value['interface Administration Status'] === 'down') {
-              firstsobject.series[1].data.push(parseInt(150))
-            }
-          }
           //Carte 1 et 2 Operationnelement Up et Down
           if (value['type'] === 'C1.P1') {
             if (value['interface Operation Status'] === 'up') {
-              firstsobject.series[2].data.push(parseInt(300))
+              firstsobject.series[2].data.push(parseInt(100))
             } else if (value['interface Operation Status'] === 'down') {
-              firstsobject.series[2].data.push(parseInt(350))
+              firstsobject.series[2].data.push(parseInt(0))
             }
           } else if (value['type'] === 'C1.P2') {
             if (value['interface Operation Status'] === 'up') {
-              firstsobject.series[3].data.push(parseInt(400))
+              firstsobject.series[3].data.push(parseInt(100))
             } else if (value['interface Operation Status'] === 'down') {
-              firstsobject.series[3].data.push(parseInt(450))
-            }
-          }
-
-          //Carte 3 et 4 Administrativement Up et Down
-          if (value['type'] === 'C1.P3') {
-            secondsobject.options.xaxis.categories.push(value['timestamp'])
-            if (value['interface Administration Status'] === 'up') {
-              secondsobject.series[0].data.push(parseInt(100))
-            } else if (value['interface Administration Status'] === 'down') {
-              secondsobject.series[0].data.push(parseInt(50))
-            }
-          } else if (value['type'] === 'C1.P4') {
-            secondsobject.options.xaxis.categories.push(value['timestamp'])
-            if (value['interface Administration Status'] === 'up') {
-              secondsobject.series[1].data.push(parseInt(200))
-            } else if (value['interface Administration Status'] === 'down') {
-              secondsobject.series[1].data.push(parseInt(150))
+              firstsobject.series[3].data.push(parseInt(0))
             }
           }
           //Carte 3 et 4 Operationnelement Up et Down
           if (value['type'] === 'C1.P3') {
             if (value['interface Operation Status'] === 'up') {
-              secondsobject.series[2].data.push(parseInt(300))
+              secondsobject.series[2].data.push(parseInt(100))
             } else if (value['interface Operation Status'] === 'down') {
-              secondsobject.series[2].data.push(parseInt(350))
+              secondsobject.series[2].data.push(parseInt(0))
             }
           } else if (value['type'] === 'C1.P4') {
             if (value['interface Operation Status'] === 'up') {
-              secondsobject.series[3].data.push(parseInt(400))
+              secondsobject.series[3].data.push(parseInt(100))
             } else if (value['interface Operation Status'] === 'down') {
-              secondsobject.series[3].data.push(parseInt(450))
+              secondsobject.series[3].data.push(parseInt(0))
             }
           }
         })
@@ -187,42 +165,46 @@ const OntEthPort = (props) => {
   return (
     <>
       {!goptions && !g2options && <Loading />}
-      <Card>
-        <Card.Body>
-          {goptions.series === [{}] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={goptions.options}
-              series={goptions.series}
-              type='line'
-              height='500'
-              width='600'
-            />
-          )}
-          <h3>
-            Etat Operationnel Et Administratif des Ports P1 et P2 de l'ONT
-          </h3>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          {g2options.series === [] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={g2options.options}
-              series={g2options.series}
-              type='line'
-              height='500'
-              width='600'
-            />
-          )}
-          <h3>
-            Etat Operationnel Et Administratif des Ports P3 et P4 de l'ONT
-          </h3>
-        </Card.Body>
-      </Card>
+      {isOper == true ? (
+        <Card>
+          <Card.Body>
+            {goptions.series === [{}] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={goptions.options}
+                series={goptions.series}
+                type='line'
+                height='500'
+                width='600'
+              />
+            )}
+            <h3>Etat Operationnel des Ports P1 et P2 de l'ONT</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
+      {isAdmin == true ? (
+        <Card>
+          <Card.Body>
+            {g2options.series === [] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={g2options.options}
+                series={g2options.series}
+                type='line'
+                height='500'
+                width='600'
+              />
+            )}
+            <h3>Etat Operationnel des Ports P3 et P4 de l'ONT</h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
     </>
   )
 }

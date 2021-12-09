@@ -1,4 +1,4 @@
-const initialState = { current: '' }
+const initialState = { current: 'no' }
 
 export const ontFilterReducer = (state = initialState.current, action) => {
   switch (action.type) {

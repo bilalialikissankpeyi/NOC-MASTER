@@ -16,7 +16,7 @@ const GponAggGem = (props) => {
   var [goptions, setgoptions] = React.useState({
     series: [{}, {}],
     options: {
-      color: ['#6ab04c', '#2980b9'],
+      colors: ['#6ab04c', '#2980b9'],
       chart: {
         background: 'transparent',
       },
@@ -34,14 +34,23 @@ const GponAggGem = (props) => {
       width: '100%',
     },
   })
+  var [isgponAgg, setGponAgg] = React.useState(false)
   React.useEffect(() => {
+    props.render.map((element) => {
+      console.log('element', element)
+      switch (element) {
+        case 'ONT Aggregation Gem':
+          setGponAgg(true)
+          break
+      }
+    })
     var aggobject = {
       series: [
         { name: 'Up Fowarded Byte', data: [] },
         { name: 'Down Fowarded Byte', data: [] },
       ],
       options: {
-        color: ['#6ab04c', '#2980b9'],
+        colors: ['#6ab04c', '#2980b9'],
         chart: {
           background: 'transparent',
         },
@@ -82,22 +91,26 @@ const GponAggGem = (props) => {
   return (
     <>
       {!goptions && <Loading />}
-      <Card>
-        <Card.Body>
-          {goptions.series === [{}, {}] ? (
-            <Loading />
-          ) : (
-            <Chart
-              options={goptions.options}
-              series={goptions.series}
-              height='500'
-              width='600'
-              type='line'
-            />
-          )}
-          <h3>ONT Aggregation Gem </h3>
-        </Card.Body>
-      </Card>
+      {isgponAgg == true ? (
+        <Card>
+          <Card.Body>
+            {goptions.series === [{}, {}] ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={goptions.options}
+                series={goptions.series}
+                height='500'
+                width='600'
+                type='line'
+              />
+            )}
+            <h3>ONT Aggregation Gem </h3>
+          </Card.Body>
+        </Card>
+      ) : (
+        ''
+      )}
     </>
   )
 }

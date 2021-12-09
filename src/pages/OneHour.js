@@ -2,12 +2,14 @@ import React from 'react'
 import Loading from '../graphe/Loading'
 import OntEthPort from '../graphe/OntEthPortChart'
 import OntVeiPort from '../graphe/ontVeiPortChart'
-import PonChart from '../graphe/PonChartDash'
+import PonChart from '../graphe/PonChart'
 import CpuUsageChart from '../graphe/CpuChart'
 import VlanPort from '../graphe/VlanPortChart'
 import Ont from '../graphe/OntChart'
 import { Card } from 'react-bootstrap'
 import ontEthLinesLoT from '../graphe/OntEthLinesLoTChart'
+import OLTUserInformationChart from '../graphe/OLTUserInformationChart'
+
 const Hour = (props) => {
   var [start, setStart] = React.useState(props.start)
   //new Date('2021-10-14T07:32:00.885Z')
@@ -18,8 +20,10 @@ const Hour = (props) => {
   var [ethernetLinesLoT, setEthernetLinesLoT] = React.useState([])
   var [cpuUsage, setCpuUsage] = React.useState([])
   var [pon, setPon] = React.useState([])
+  var [OLTUsers, setOLTUsers] = React.useState([])
   React.useEffect(() => {
     var ontArray = []
+    var OLTusersArray = []
     var ethportArray = []
     var veipArray = []
     var ethernetLinesArray = []
@@ -53,7 +57,7 @@ const Hour = (props) => {
           ethernetLinesArray.push(element)
           break
         case 'Etat des utilisateurs':
-          ontArray.push(element)
+          OLTusersArray.push(element)
           break
         case 'Etat des PON':
           ponArray.push(element)
@@ -69,6 +73,7 @@ const Hour = (props) => {
     setEthernetLinesLoT(ethernetLinesArray)
     setPon(ponArray)
     setCpuUsage(cpuUsageArray)
+    setOLTUsers(OLTusersArray)
   }, [])
   return (
     <>
@@ -148,6 +153,27 @@ const Hour = (props) => {
               width: '300px',
             }}
             render={ethernetLinesLoT}
+          />
+        </div>
+      ) : (
+        ''
+      )}
+
+      {OLTUsers.length != 0 ? (
+        <div className='row'>
+          <Card style={{ color: '#6ab04c' }}>
+            <Card.Body>Information sur L'Etat des Utilisateurs</Card.Body>
+          </Card>
+          <OLTUserInformationChart
+            start={start}
+            end={end}
+            style={{
+              borderBottom: '1px solid gray',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              width: '300px',
+            }}
+            render={pon}
           />
         </div>
       ) : (

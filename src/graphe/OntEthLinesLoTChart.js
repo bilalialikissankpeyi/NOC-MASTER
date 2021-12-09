@@ -1,12 +1,11 @@
 import React from 'react'
 import { getTimeFrameData } from '../dataService/getSearchInformations'
-
-import { useSelector, useDispatch } from 'react-redux'
-import Loading from '../graphe/Loading'
+import Loading from './Loading'
 import Chart from 'react-apexcharts'
 import { currentONT, ontFilter } from '../actions'
 import { Card } from 'react-bootstrap'
-const BridgePort = (props) => {
+import { useSelector, useDispatch } from 'react-redux'
+const OntEthLinesLoT = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
   const currentont = useSelector((state) => state.currentONT)
@@ -88,9 +87,9 @@ const BridgePort = (props) => {
   var [isdebit, setDebit] = React.useState(false)
   var [isvolume, setVolume] = React.useState(false)
   var [isperte, setPerte] = React.useState(false)
+
   React.useEffect(() => {
     props.render.map((element) => {
-      console.log('element', element)
       switch (element) {
         case 'Debit IN/OUT':
           setDebit(true)
@@ -159,48 +158,56 @@ const BridgePort = (props) => {
     }
 
     getTimeFrameData({
-      collection: 'BridgePort',
+      collection: 'EthernetLinesLot',
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
-      olt: currentont.ObjectName.split(':')[0],
-      ObjectName: currentont.ObjectName,
+      olt: currentolt.ObjectName,
+      ObjectName: currentolt.ObjectName,
     }).then((result) => {
       if (result.length != 0) {
-        console.log('resrrr', result)
+        console.log({ EthPort: result })
         result[0].data.map((value) => {
-          if (value.type === 'SERV1') {
-            //ToDO
-          } else if (value.type === 'C14.P1') {
+          if (value['ifOperStatus'] === 'up' && value['ifHighSpeed'] != 0) {
             //Debit IN
             firstsobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Up Foward Byte'] * 8) / (900 * 1024 * 1024)),
+              parseInt(
+                (value['interface Ingress Octets'] * 8) / (3600 * 1024 * 1024)
+              ),
             ])
             //Debit OUT
             firstsobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Down Foward Byte'] * 8) / (900 * 1024 * 1024)),
+              parseInt(
+                (value['interface Outgress Octets'] * 8) / (3600 * 1024 * 1024)
+              ),
             ])
             //Volume IN
             secondsobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Up Foward Byte'] * 8) / (1024 * 1024)),
+              parseInt((value['interface Ingress Octets'] * 8) / (1024 * 1024)),
             ])
             //Volume OUT
             secondsobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Down Foward Byte'] * 8) / (1024 * 1024)),
+              parseInt(
+                (value['interface Outgress Octets'] * 8) / (1024 * 1024)
+              ),
             ])
             //Ingress Discarded Byte
             thirdobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Up Discard Byte'] * 8) / (1024 * 1024)),
+              parseInt(
+                (value['interface Ingress Discards'] * 8) / (1024 * 1024)
+              ),
             ])
             //Outgress Discard Byte
             firstsobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['Down Discard Byte'] * 8) / (3600 * 1024 * 1024)),
+              parseInt(
+                (value['interface Outgress Octets'] * 8) / (3600 * 1024 * 1024)
+              ),
             ])
           }
         })
@@ -230,7 +237,7 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Debit en Entree et En Sortie de l'ONT</h3>
+            <h3>Debit en Entree et En Sortie de l'Interface UPLINK de l'OLT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -250,7 +257,7 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Volume en entree et sortie de L'ONT</h3>
+            <h3>Volume en entree et sortie de l'interface Uplink de L'OLT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -270,7 +277,9 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Perte de Packet en Entree et Sortie de l'ONT</h3>
+            <h3>
+              Perte de Packet en Entree et Sortie de l'interface UPLINK de l'OLT
+            </h3>
           </Card.Body>
         </Card>
       ) : (
@@ -280,4 +289,4 @@ const BridgePort = (props) => {
   )
 }
 
-export default BridgePort
+export default OntEthLinesLoT

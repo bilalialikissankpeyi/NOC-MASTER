@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 //import Table from '../components/table/Table'
-import { Table } from 'reactstrap'
+import { Table } from 'react-bootstrap'
 import customerList from '../assets/JsonData/admin.json'
 import Loading from '../graphe/Loading'
 import { getAllList } from '../dataService/getSearchInformations'
@@ -18,7 +18,7 @@ const Customers = () => {
   const history = useHistory()
   const gotToOlt = (element) => {
     dispatch(currentOLT(element))
-    history.push(`/analytics`)
+    history.push(`/actionsOLT`)
   }
 
   React.useEffect(() => {
@@ -86,7 +86,7 @@ const Customers = () => {
           <div className='col-12'>
             <div className='card'>
               <div className='card__body'>
-                <Table hover bordered>
+                <Table striped bordered hover size='sm'>
                   <thead>
                     <tr>
                       <th>ObjectName</th>
