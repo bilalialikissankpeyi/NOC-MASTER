@@ -9,6 +9,9 @@ export var ManagDebInOutobject = {
     chart: {
       background: 'transparent',
     },
+    title: {
+      text: 'Debit VLAN Management',
+    },
     dataLabels: {
       enabled: false,
     },
@@ -30,6 +33,9 @@ export var ManagVolInOutobject = {
     dataLabels: {
       enabled: false,
     },
+    title: {
+      text: 'Volume VLAN Management',
+    },
     xaxis: {
       type: 'datetime',
     },
@@ -44,6 +50,9 @@ export var ManagPerInOutobject = {
     colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
     chart: {
       background: 'transparent',
+    },
+    title: {
+      text: 'Perte VLAN Management',
     },
     dataLabels: {
       enabled: false,
@@ -65,6 +74,9 @@ export var VoDebInOutobject = {
     chart: {
       background: 'transparent',
     },
+    title: {
+      text: 'Debit VLAN Voix',
+    },
     dataLabels: {
       enabled: false,
     },
@@ -83,6 +95,9 @@ export var VoVolInOutobject = {
     chart: {
       background: 'transparent',
     },
+    title: {
+      text: 'Volume VLAN Voix',
+    },
     dataLabels: {
       enabled: false,
     },
@@ -100,6 +115,9 @@ export var VoPerInOutobject = {
     colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
     chart: {
       background: 'transparent',
+    },
+    title: {
+      text: 'Perte VLAN Voix',
     },
     dataLabels: {
       enabled: false,
@@ -121,6 +139,9 @@ export var IntDebInOutobject = {
     chart: {
       background: 'transparent',
     },
+    title: {
+      text: 'Debit VLAN Internet',
+    },
     dataLabels: {
       enabled: false,
     },
@@ -138,6 +159,9 @@ export var IntVolInOutobject = {
     colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
     chart: {
       background: 'transparent',
+    },
+    title: {
+      text: 'Volume VLAN Internet',
     },
     dataLabels: {
       enabled: false,
@@ -159,6 +183,9 @@ export var IntPerInOutobject = {
     },
     dataLabels: {
       enabled: false,
+    },
+    title: {
+      text: 'Perte VLAN Internet',
     },
     xaxis: {
       type: 'datetime',

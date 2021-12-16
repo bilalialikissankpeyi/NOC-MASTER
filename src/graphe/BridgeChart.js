@@ -9,81 +9,12 @@ import { Card } from 'react-bootstrap'
 const BridgePort = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
-  const currentont = useSelector((state) => state.currentONT)
+  const searchTerm = useSelector((state) => state.searched)
   const filtered = useSelector((state) => state.ontFilter)
 
-  var [goptions, setgoptions] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
-  var [g2options, setg2options] = React.useState({
-    series: [],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
-  var [g3options, setg3options] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+  var [goptions, setgoptions] = React.useState(null)
+  var [g2options, setg2options] = React.useState(null)
+  var [g3options, setg3options] = React.useState(null)
 
   var [isdebit, setDebit] = React.useState(false)
   var [isvolume, setVolume] = React.useState(false)
@@ -113,8 +44,14 @@ const BridgePort = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          text: "Debit en Entree et En Sortie de l'ONT",
+        },
         dataLabels: {
           enabled: false,
+        },
+        stroke: {
+          curve: 'straight',
         },
         xaxis: {
           type: 'datetime',
@@ -131,8 +68,14 @@ const BridgePort = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          text: "Volume en entree et sortie de L'ONT",
+        },
         dataLabels: {
           enabled: false,
+        },
+        stroke: {
+          curve: 'straight',
         },
         xaxis: {
           type: 'datetime',
@@ -149,6 +92,9 @@ const BridgePort = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          text: "Perte de Packet en Entree et Sortie de l'ONT",
+        },
         dataLabels: {
           enabled: false,
         },
@@ -163,8 +109,8 @@ const BridgePort = (props) => {
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
-      olt: currentont.ObjectName.split(':')[0],
-      ObjectName: currentont.ObjectName,
+      olt: searchTerm.ObjectName.split(':')[0],
+      ObjectName: searchTerm.ObjectName,
     }).then((result) => {
       if (result.length != 0) {
         console.log('resrrr', result)
@@ -215,11 +161,10 @@ const BridgePort = (props) => {
 
   return (
     <>
-      {!goptions && !g2options && !g3options && <Loading />}
       {isdebit == true ? (
         <Card>
           <Card.Body>
-            {goptions.series === [{}] ? (
+            {goptions == null ? (
               <Loading />
             ) : (
               <Chart
@@ -230,7 +175,6 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Debit en Entree et En Sortie de l'ONT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -239,7 +183,7 @@ const BridgePort = (props) => {
       {isvolume == true ? (
         <Card>
           <Card.Body>
-            {g2options.series === [] ? (
+            {g2options == null ? (
               <Loading />
             ) : (
               <Chart
@@ -250,7 +194,6 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Volume en entree et sortie de L'ONT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -259,7 +202,7 @@ const BridgePort = (props) => {
       {isperte == true ? (
         <Card>
           <Card.Body>
-            {g2options.series === [] ? (
+            {g2options == null ? (
               <Loading />
             ) : (
               <Chart
@@ -270,7 +213,6 @@ const BridgePort = (props) => {
                 width='600'
               />
             )}
-            <h3>Perte de Packet en Entree et Sortie de l'ONT</h3>
           </Card.Body>
         </Card>
       ) : (

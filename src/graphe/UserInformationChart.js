@@ -1,6 +1,6 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
-
+import { Card } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -12,287 +12,148 @@ import Loading from '../graphe/Loading'
 
 var UserInformation = (props) => {
   const history = useHistory()
-  var [goptions, setgoptions] = React.useState({
-    options: {
-      colors: ['#ff4000', '#0080ff'],
-      labels: ['Down', 'Up'],
-      chart: {
-        events: {
-          dataPointSelection: (event, chartContext, config) => {
-            console.log(config.w.config.labels[config.dataPointIndex])
-          },
-        },
-      },
-    },
-    series: [5, 10],
-  })
+  var [goptions, setgoptions] = React.useState(null)
 
-  var [g2options, setg2options] = React.useState({
-    options: {
-      colors: ['#ff4000', '#0080ff'],
-      labels: ['Down', 'Up'],
-      chart: {
-        events: {
-          dataPointSelection: (event, chartContext, config) => {
-            console.log(config.w.config.labels[config.dataPointIndex])
-          },
-        },
-      },
-    },
-    series: [5, 10],
-  })
-  var upAdminArray = []
-  var downAdminArray = []
-  var upOperArray = []
-  var downOperArray = []
+  var [g2options, setg2options] = React.useState(null)
+
   React.useEffect(() => {
-    if (props.ObjectName == undefined && props.olt == undefined) {
-      getDashBoardLastData({
-        typeofSearch: 'getDashBoardLastData',
-        collection: 'ISAM_ONT',
-        last: props.last,
-      }).then((result) => {
-        if (result.length != 0) {
-          console.log('longuer user', result.length)
-          result.map((element, y) => {
-            if (element.data.length != 0) {
-              if (element.data[0]['interface Administration Status'] === 'up') {
-                upAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Administration Status'] === 'down'
-              ) {
-                downAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-
-              if (element.data[0]['interface Operation Status'] === 'up') {
-                upOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Operation Status'] === 'down'
-              ) {
-                downOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-            } else {
-              if (result.length - 1 == y)
-                alert('aucune information disponible ')
-            }
-          })
-
-          if (upOperArray.length != 0 || downOperArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg2options({
-              options: {
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upOperArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downOperArray,
-                        })
-                      }
-                    },
-                  },
-                },
+    var firstsobject = {
+      series: [
+        { name: 'Etat du Service Up', data: [] },
+        { name: 'Etat Administratif Up', data: [] },
+        { name: 'Etat du Service Down', data: [] },
+        { name: 'Etat Administratif Down', data: [] },
+      ],
+      options: {
+        chart: {
+          type: 'bar',
+          height: '600',
+          width: '600',
+          stacked: true,
+          toolbar: {
+            show: true,
+          },
+          zoom: {
+            enabled: true,
+          },
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0,
               },
-              series: [upOperArray.length, downOperArray.length],
-            })
-          }
-
-          if (upAdminArray.length != 0 || downAdminArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setgoptions({
-              options: {
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upAdminArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downAdminArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upAdminArray.length, downAdminArray.length],
-            })
-          }
-        } else {
-        }
-      })
-    } else {
-      getLastData({
-        typeofSearch: 'getLastData',
-        collection: 'ISAM_ONT',
-        ObjectName: props.ObjectName,
-        last: props.last,
-        olt: props.olt,
-      }).then((result) => {
-        if (result.length != 0) {
-          console.log({
-            virm: result[0].data[0]['interface Administration Status'],
-          })
-          result.map((element) => {
-            if (element.data.length != 0) {
-              if (element.data[0]['interface Administration Status'] === 'up') {
-                upAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Administration Status'] === 'down'
-              ) {
-                downAdminArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-
-              if (element.data[0]['interface Operation Status'] === 'up') {
-                upOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              } else if (
-                element.data[0]['interface Operation Status'] === 'down'
-              ) {
-                downOperArray.push({
-                  ...element.data[0],
-                  ObjectID: element.ObjectID,
-                })
-              }
-            }
-          })
-
-          if (upOperArray.length != 0 || downOperArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setg2options({
-              options: {
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upOperArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downOperArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upOperArray.length, downOperArray.length],
-            })
-          }
-
-          if (upAdminArray.length != 0 || downAdminArray.length != 0) {
-            console.log({ lonng: upOperArray.length })
-            setgoptions({
-              options: {
-                labels: ['Up', 'Down'],
-                chart: {
-                  events: {
-                    dataPointSelection: (event, chartContext, config) => {
-                      if (
-                        config.w.config.labels[config.dataPointIndex] === 'Up'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: upAdminArray,
-                        })
-                      } else if (
-                        config.w.config.labels[config.dataPointIndex] === 'Down'
-                      ) {
-                        history.push({
-                          pathname: `/Details`,
-                          state: downAdminArray,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              series: [upAdminArray.length, downAdminArray.length],
-            })
-          }
-        } else {
-        }
-      })
+            },
+          },
+        ],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+          },
+        },
+        title: {
+          text: 'Utilisateurs',
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: [],
+        },
+        yaxis: {
+          title: {
+            text: undefined,
+          },
+        },
+        fill: {
+          opacity: 1,
+        },
+        legend: {
+          position: 'right',
+          offsetY: 40,
+        },
+      },
     }
+
+    getDashBoardLastData({
+      typeofSearch: 'getDashBoardLastData',
+      collection: 'ISAM_ONT',
+      start: props.start,
+      end: props.end,
+    }).then((result) => {
+      console.log('Non', result)
+      if (result.length != 0) {
+        console.log('Non', result.length)
+        var AdmincounterUp = []
+        var AdmincounterDown = []
+        var OpercounterUp = []
+        var OpercounterDown = []
+        var categories = []
+        result.map((element) => {
+          if (element.data.length != 0) {
+            element.data.map((subelement, index) => {
+              if (OpercounterUp[index] == undefined) {
+                OpercounterUp.push(0)
+              }
+              if (OpercounterDown[index] == undefined) {
+                OpercounterDown.push(0)
+                categories.push(new Date(subelement['timestamp']).getTime())
+              }
+              if (AdmincounterUp[index] == undefined) {
+                AdmincounterUp.push(0)
+              }
+              if (AdmincounterDown[index] == undefined) {
+                AdmincounterDown.push(0)
+              }
+              if (subelement['interface Administration Status'] == 'up') {
+                AdmincounterUp[index] += 1
+                //adminup++
+              } else {
+                AdmincounterDown[index] += 1
+                //admindown++
+              }
+
+              if (subelement['interface Operation Status'] == 'up') {
+                OpercounterUp[index] += 1
+                //adminup++
+              } else {
+                OpercounterDown[index] += 1
+                //admindown++
+              }
+            })
+          }
+        })
+        console.log('Op up ', OpercounterUp)
+
+        firstsobject.series[0].data = OpercounterUp
+        firstsobject.series[1].data = AdmincounterUp
+        firstsobject.series[2].data = OpercounterDown
+        firstsobject.series[3].data = AdmincounterDown
+        console.log('Data Series ', firstsobject.series)
+        firstsobject.options.xaxis.categories = categories
+        console.log('categories', firstsobject.options.xaxis.categories)
+        setg2options(firstsobject)
+      }
+    })
   }, [])
   return (
     <>
-      <div className='col-6'>
-        <h3>Statut Administratif des Utilisateurs</h3>
-        {!goptions && <Loading />}
-        {goptions.series === [5, 10] ? (
-          <Loading />
-        ) : (
-          <Chart
-            options={goptions.options}
-            series={goptions.series}
-            type='pie'
-            width='380'
-          />
-        )}
-      </div>
-      <div className='col-6'>
-        <h3>Statut Operationnel des Utilisateurs</h3>
-        {!g2options && <Loading />}
-        {g2options.series === [5, 10] ? (
-          <Loading />
-        ) : (
-          <Chart
-            options={g2options.options}
-            series={g2options.series}
-            type='pie'
-            width='380'
-          />
-        )}
-      </div>
+      <Card>
+        <Card.Body>
+          {g2options != null ? (
+            <Chart
+              options={g2options.options}
+              series={g2options.series}
+              type='bar'
+              height='600'
+              width='900'
+            />
+          ) : (
+            <Loading />
+          )}
+        </Card.Body>
+      </Card>
     </>
   )
 }

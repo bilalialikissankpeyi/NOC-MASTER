@@ -11,78 +11,9 @@ const OntEthLinesLoT = (props) => {
   const currentont = useSelector((state) => state.currentONT)
   const filtered = useSelector((state) => state.ontFilter)
 
-  var [goptions, setgoptions] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
-  var [g2options, setg2options] = React.useState({
-    series: [],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
-  var [g3options, setg3options] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+  var [goptions, setgoptions] = React.useState(null)
+  var [g2options, setg2options] = React.useState(null)
+  var [g3options, setg3options] = React.useState(null)
 
   var [isdebit, setDebit] = React.useState(false)
   var [isvolume, setVolume] = React.useState(false)
@@ -112,6 +43,9 @@ const OntEthLinesLoT = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          Text: "Debit IN/OUT UPLINK de l'OLT",
+        },
         dataLabels: {
           enabled: false,
         },
@@ -130,6 +64,9 @@ const OntEthLinesLoT = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          Text: "Volume IN/OUT Uplink de L'OLT",
+        },
         dataLabels: {
           enabled: false,
         },
@@ -147,6 +84,9 @@ const OntEthLinesLoT = (props) => {
         colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
         chart: {
           background: 'transparent',
+        },
+        title: {
+          Text: " Perte de Packet IN/OUT UPLINK de l'OLT",
         },
         dataLabels: {
           enabled: false,
@@ -168,46 +108,43 @@ const OntEthLinesLoT = (props) => {
       if (result.length != 0) {
         console.log({ EthPort: result })
         result[0].data.map((value) => {
-          if (value['ifOperStatus'] === 'up' && value['ifHighSpeed'] != 0) {
+          if (
+            value['interface Operation Status'] === 'up' &&
+            value['interface High Speed'] != 0
+          ) {
             //Debit IN
             firstsobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
               parseInt(
-                (value['interface Ingress Octets'] * 8) / (3600 * 1024 * 1024)
+                value['interface Ingress Octets'] / (3600 * 1024 * 1024)
               ),
             ])
             //Debit OUT
             firstsobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
               parseInt(
-                (value['interface Outgress Octets'] * 8) / (3600 * 1024 * 1024)
+                value['Interface Outgress Octets'] / (3600 * 1024 * 1024)
               ),
             ])
             //Volume IN
             secondsobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt((value['interface Ingress Octets'] * 8) / (1024 * 1024)),
+              parseInt(value['interface Ingress Octets'] / (1024 * 1024)),
             ])
             //Volume OUT
             secondsobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(
-                (value['interface Outgress Octets'] * 8) / (1024 * 1024)
-              ),
+              parseInt(value['Interface Outgress Octets'] / (1024 * 1024)),
             ])
             //Ingress Discarded Byte
             thirdobject.series[0].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(
-                (value['interface Ingress Discards'] * 8) / (1024 * 1024)
-              ),
+              parseInt(value['interface Ingress Discards'] / (1024 * 1024)),
             ])
             //Outgress Discard Byte
-            firstsobject.series[1].data.push([
+            thirdobject.series[1].data.push([
               new Date(value['timestamp']).getTime(),
-              parseInt(
-                (value['interface Outgress Octets'] * 8) / (3600 * 1024 * 1024)
-              ),
+              parseInt(value['interface Outgress Discards'] / (1024 * 1024)),
             ])
           }
         })
@@ -222,11 +159,10 @@ const OntEthLinesLoT = (props) => {
 
   return (
     <>
-      {!goptions && !g2options && !g3options && <Loading />}
       {isdebit == true ? (
         <Card>
           <Card.Body>
-            {goptions.series === [{}] ? (
+            {goptions == null ? (
               <Loading />
             ) : (
               <Chart
@@ -237,7 +173,6 @@ const OntEthLinesLoT = (props) => {
                 width='600'
               />
             )}
-            <h3>Debit en Entree et En Sortie de l'Interface UPLINK de l'OLT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -246,7 +181,7 @@ const OntEthLinesLoT = (props) => {
       {isvolume == true ? (
         <Card>
           <Card.Body>
-            {g2options.series === [] ? (
+            {g2options == null ? (
               <Loading />
             ) : (
               <Chart
@@ -257,7 +192,6 @@ const OntEthLinesLoT = (props) => {
                 width='600'
               />
             )}
-            <h3>Volume en entree et sortie de l'interface Uplink de L'OLT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -266,7 +200,7 @@ const OntEthLinesLoT = (props) => {
       {isperte == true ? (
         <Card>
           <Card.Body>
-            {g2options.series === [] ? (
+            {g2options == null ? (
               <Loading />
             ) : (
               <Chart
@@ -277,9 +211,6 @@ const OntEthLinesLoT = (props) => {
                 width='600'
               />
             )}
-            <h3>
-              Perte de Packet en Entree et Sortie de l'interface UPLINK de l'OLT
-            </h3>
           </Card.Body>
         </Card>
       ) : (

@@ -15,6 +15,7 @@ import Table from '../table/Table'
 import Dropdown from '../dropdown/dropdown'
 import notifications from '../../assets/JsonData/notification.json'
 import ThemeMenu from '../thememenu/ThemeMenu'
+import { Button } from 'react-bootstrap'
 
 const curr_user = {
   display_name: 'Noc',
@@ -42,6 +43,7 @@ const renderUserMenu = (item, index) => (
 const Topnav = () => {
   const dispatch = useDispatch()
   const searchTerm = useSelector((state) => state.searched)
+  var [toSearch, SetToSearch] = React.useState('')
   //const currentPage  = useSelector((state)=>state.currentPage)
   return (
     <div className='topnav'>
@@ -51,11 +53,16 @@ const Topnav = () => {
           placeholder='Search here...'
           onChange={(e) => {
             if (e !== '') {
-              dispatch(loadData(e.target.value))
+              SetToSearch(e.target.value)
             }
           }}
         />
-        <i className='bx bx-search'></i>
+        <i
+          className='bx bx-search'
+          onClick={() => {
+            dispatch(loadData(toSearch))
+          }}
+        ></i>
       </div>
       <div className='topnav_right '>
         {!searchTerm ? (
@@ -65,7 +72,11 @@ const Topnav = () => {
         ) : (
           <>
             <div className='topnav_right-item'>
-              <h3>Object Found {`${searchTerm.ObjectName}`}</h3>
+              <h3>
+                ONT: {`${searchTerm.ObjectName}`} {''}
+                Etat du Service {`${searchTerm['interface Operation Status']}`}{' '}
+                A {`${searchTerm['timestamp']}`} {''}
+              </h3>
             </div>
             <div className='topnav_right-item'>
               <Dropdown

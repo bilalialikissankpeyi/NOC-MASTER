@@ -20,174 +20,21 @@ import {
 const VlanPort = (props) => {
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
-  const currentont = useSelector((state) => state.currentONT)
+  const searchTerm = useSelector((state) => state.searched)
   const filtered = useSelector((state) => state.ontFilter)
 
   //Internet
-  var [gIntDebInOutobject, setgIntDebInOutobject] = React.useState({
-    series: [
-      { name: 'Debit IN', data: [] },
-      { name: 'Debit OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gIntVolInOutobject, setgIntVolInOutobject] = React.useState({
-    series: [
-      { name: 'Volume IN', data: [] },
-      { name: 'Volume OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gIntPerInOutobject, setgIntPerInOutobject] = React.useState({
-    series: [
-      { name: 'Perte IN', data: [] },
-      { name: 'Perte OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
+  var [gIntDebInOutobject, setgIntDebInOutobject] = React.useState(null)
+  var [gIntVolInOutobject, setgIntVolInOutobject] = React.useState(null)
+  var [gIntPerInOutobject, setgIntPerInOutobject] = React.useState(null)
   //Management
-  var [gManagDebInOutobject, setgManagDebInOutobject] = React.useState({
-    series: [
-      { name: 'Debit IN', data: [] },
-      { name: 'Debit OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gManagVolInOutobject, setgManagVolInOutobject] = React.useState({
-    series: [
-      { name: 'Volume IN', data: [] },
-      { name: 'Volume OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gManagPerInOutobject, setgManagPerInOutobject] = React.useState({
-    series: [
-      { name: 'Perte IN', data: [] },
-      { name: 'Perte OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
+  var [gManagDebInOutobject, setgManagDebInOutobject] = React.useState(null)
+  var [gManagVolInOutobject, setgManagVolInOutobject] = React.useState(null)
+  var [gManagPerInOutobject, setgManagPerInOutobject] = React.useState(null)
   //Voix
-  var [gVoDebInOutobject, setgVoDebInOutobject] = React.useState({
-    series: [
-      { name: 'Debit IN', data: [] },
-      { name: 'Debit OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gVoVolInOutobject, setgVoVolInOutobject] = React.useState({
-    series: [
-      { name: 'Volume IN', data: [] },
-      { name: 'Volume OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
-  var [gVoPerInOutobject, setgVoPerInOutobject] = React.useState({
-    series: [
-      { name: 'Perte IN', data: [] },
-      { name: 'Perte OUT', data: [] },
-    ],
-    options: {
-      colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: [],
-      },
-    },
-  })
+  var [gVoDebInOutobject, setgVoDebInOutobject] = React.useState(null)
+  var [gVoVolInOutobject, setgVoVolInOutobject] = React.useState(null)
+  var [gVoPerInOutobject, setgVoPerInOutobject] = React.useState(null)
   //Bool d'affichage
   var [debInOutManag, setDebInOutManag] = React.useState(false)
   var [debInOutInt, setDebInOutInt] = React.useState(false)
@@ -237,8 +84,8 @@ const VlanPort = (props) => {
       typeOfSearch: 'getTimeFrameData',
       start: props.start,
       end: props.end,
-      olt: currentont.ObjectName.split(':')[0],
-      ObjectName: currentont.ObjectName,
+      olt: searchTerm.ObjectName.split(':')[0],
+      ObjectName: searchTerm.ObjectName,
     }).then((result) => {
       if (result.length != 0) {
         console.log({ vlan: result })
@@ -348,22 +195,12 @@ const VlanPort = (props) => {
 
   return (
     <>
-      {!gManagPerInOutobject &&
-        !gIntPerInOutobject &&
-        !gVoPerInOutobject &&
-        !gManagDebInOutobject &&
-        !gIntDebInOutobject &&
-        !gVoDebInOutobject &&
-        !gManagVolInOutobject &&
-        !gIntVolInOutobject &&
-        !gVoVolInOutobject && <Loading />}
-
       {/*graphe Perte*/}
       {perInOutManag == true ? (
         <Card>
           <Card.Body>
             {' '}
-            {gManagPerInOutobject.series === [] ? (
+            {gManagPerInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -374,7 +211,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Perte de Paquet VLAN Management</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -384,7 +220,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gVoPerInOutobject.series === [] ? (
+            {gVoPerInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -395,7 +231,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Perte de Paquet VLAN Voix</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -405,7 +240,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gIntPerInOutobject.series === [] ? (
+            {gIntPerInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -416,7 +251,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Perte de Paquet VLAN Internet</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -427,7 +261,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gManagDebInOutobject.series === [] ? (
+            {gManagDebInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -438,7 +272,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Debit du Trafic sur VLAN de Management</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -448,7 +281,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gVoDebInOutobject.series === [] ? (
+            {gVoDebInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -459,7 +292,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Debit du Trafic sur le VLAN Voix</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -469,7 +301,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gIntDebInOutobject.series === [] ? (
+            {gIntDebInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -480,7 +312,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Debit du Trafic VLAN Internet</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -491,7 +322,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gManagVolInOutobject.series === [] ? (
+            {gManagVolInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -502,7 +333,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Volume du Trafic sur VLAN de Management</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -512,7 +342,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gVoVolInOutobject.series === [] ? (
+            {gVoVolInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -523,7 +353,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Volume du Trafic sur le VLAN Voix</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -533,7 +362,7 @@ const VlanPort = (props) => {
         <Card>
           <Card.Body>
             {' '}
-            {gIntVolInOutobject.series === [] ? (
+            {gIntVolInOutobject == null ? (
               <Loading />
             ) : (
               <Chart
@@ -544,7 +373,6 @@ const VlanPort = (props) => {
                 type='line'
               />
             )}
-            <h3>Volume du Trafic sur le VLAN Internet</h3>
           </Card.Body>
         </Card>
       ) : (

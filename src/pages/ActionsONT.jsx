@@ -35,15 +35,15 @@ const Actions = () => {
     "Etat des Ports P1 et P2 de l'ONT",
     "Etat des Ports P3 et P4 de l'ONT",
     'Etat de la carte virtuelle',
-    'Debit IN/OUT Trafic de Management',
-    'Debit IN/OUT Trafic de Voix',
-    'Debit IN/OUT Trafic de Internet',
-    'Volume IN/OUT Trafic de Management',
-    'Volume IN/OUT Trafic de Voix',
-    'Volume IN/OUT Trafic de Internet',
-    'Perte IN/OUT Trafic de Management',
-    'Perte IN/OUT Trafic de Voix',
-    'Perte IN/OUT Trafic de Internet',
+    'Debit IN/OUT Trafic Management',
+    'Debit IN/OUT Trafic Voix',
+    'Debit IN/OUT Trafic Internet',
+    'Volume IN/OUT Trafic Management',
+    'Volume IN/OUT Trafic Voix',
+    'Volume IN/OUT Trafic Internet',
+    'Perte IN/OUT Trafic Management',
+    'Perte IN/OUT Trafic Voix',
+    'Perte IN/OUT Trafic Internet',
   ]
 
   const [checkedState, setCheckedState] = useState(
@@ -60,10 +60,10 @@ const Actions = () => {
   const [isclicked, setClicked] = useState({ clicked: false, button: 'search' })
 
   const [startDate, setStartDate] = useState(
-    new Date('13 November 2021 00:00 UTC').toISOString()
+    new Date('11 December 2021 00:00 UTC').toISOString()
   )
   const [endDate, setEndDate] = useState(
-    new Date('13 November 2021 05:00 UTC').toISOString()
+    new Date('11 December 2021 23:00 UTC').toISOString()
   )
   const dispatch = useDispatch()
   const searchTerm = useSelector((state) => state.searched)

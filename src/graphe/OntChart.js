@@ -14,30 +14,7 @@ const Ont = (props) => {
   const currentont = useSelector((state) => state.currentONT)
   const filtered = useSelector((state) => state.ontFilter)
 
-  var [goptions, setgoptions] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+  var [goptions, setgoptions] = React.useState(null)
   var [isOnt, setOnt] = React.useState(false)
   React.useEffect(() => {
     props.render.map((element) => {
@@ -57,6 +34,9 @@ const Ont = (props) => {
         colors: ['#6ab04c', '#2980b9'],
         chart: {
           background: 'transparent',
+        },
+        title: {
+          text: "Etat du Service l'ONT",
         },
         dataLabels: {
           enabled: false,
@@ -102,7 +82,7 @@ const Ont = (props) => {
       {isOnt == true ? (
         <Card>
           <Card.Body>
-            {goptions.series === [{}] ? (
+            {goptions == null ? (
               <Loading />
             ) : (
               <Chart
@@ -113,7 +93,6 @@ const Ont = (props) => {
                 width='600'
               />
             )}
-            <h3>Etat Operationnel de l'ONT</h3>
           </Card.Body>
         </Card>
       ) : (

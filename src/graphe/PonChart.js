@@ -11,119 +11,46 @@ const PonChart = (props) => {
   const currentolt = useSelector((state) => state.currentOLT)
 
   const history = useHistory()
-  var [g2options, setg2options] = React.useState({
-    series: [{}],
-    chart: {
-      type: 'bar',
-      height: 350,
-      stacked: true,
-      toolbar: {
-        show: true,
-      },
-      zoom: {
-        enabled: true,
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'bottom',
-            offsetX: -10,
-            offsetY: 0,
-          },
-        },
-      },
-    ],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        borderRadius: 10,
-      },
-    },
-    title: {
-      text: 'Pon',
-    },
-    xaxis: {
-      type: 'datetime',
-      categories: [],
-    },
-    yaxis: {
-      title: {
-        text: undefined,
-      },
-    },
-    fill: {
-      opacity: 1,
-    },
-    legend: {
-      position: 'right',
-      offsetY: 40,
-    },
-  })
+  var [g2options, setg2options] = React.useState(null)
 
   React.useEffect(() => {
     var firstsobject = {
       series: [
-        { name: 'Up Operation Status', data: [] },
-        { name: 'Up Admin Status', data: [] },
-        { name: 'Down Operation Status', data: [] },
-        { name: 'Down Admin Status', data: [] },
+        { name: 'Etat du Service Up', data: [] },
+        { name: 'Etat Administratif Up', data: [] },
+        { name: 'Etat du Service Down', data: [] },
+        { name: 'Etat Administratif Down', data: [] },
         { name: 'Capacite', data: [] },
       ],
-      chart: {
-        type: 'bar',
-        height: 350,
-        stacked: true,
-        toolbar: {
-          show: true,
-        },
-        zoom: {
-          enabled: true,
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0,
-            },
+      options: {
+        chart: {
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show: true,
           },
         },
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          borderRadius: 10,
+        plotOptions: {
+          bar: {
+            horizontal: false,
+          },
         },
-      },
-      title: {
-        text: 'Pon',
-      },
-      xaxis: {
-        type: 'datetime',
-        categories: [],
-      },
-      yaxis: {
         title: {
-          text: undefined,
+          text: 'Pon',
         },
-      },
-      fill: {
-        opacity: 1,
-      },
-      legend: {
-        position: 'right',
-        offsetY: 40,
+        xaxis: {
+          type: 'datetime',
+          categories: [],
+        },
+        legend: {
+          position: 'right',
+          offsetY: 40,
+        },
       },
     }
 
     if (props.ObjectName == undefined && props.olt == undefined) {
-      console.log('cc')
+      console.log('OLT Courant', currentolt)
       getTimeFrameData({
         collection: 'Pon',
         typeOfSearch: 'getTimeFrameData',
@@ -132,9 +59,7 @@ const PonChart = (props) => {
         olt: currentolt.ObjectName,
         ObjectName: currentolt.ObjectName,
       }).then((result) => {
-        console.log('oui oui', result)
         if (result.length != 0) {
-          console.log('oui oui', result.length)
           var AdmincounterUp = []
           var AdmincounterDown = []
           var OpercounterUp = []
@@ -174,12 +99,15 @@ const PonChart = (props) => {
               })
             }
           })
-          firstsobject.series[0].data.concat(OpercounterUp)
-          firstsobject.series[1].data.concat(AdmincounterUp)
-          firstsobject.series[2].data.concat(OpercounterDown)
-          firstsobject.series[3].data.concat(AdmincounterDown)
-          firstsobject.xaxis.categories.push(categories)
+
+          console.log('categ', categories.length)
+          firstsobject.series[0].data = OpercounterUp
+          firstsobject.series[1].data = AdmincounterUp
+          firstsobject.series[2].data = OpercounterDown
+          firstsobject.series[3].data = AdmincounterDown
+          firstsobject.options.xaxis.categories = categories
           setg2options(firstsobject)
+          console.log('series', firstsobject.series)
         }
       })
     }
@@ -189,14 +117,17 @@ const PonChart = (props) => {
       <div className='row'>
         <Card>
           <Card.Body>
-            <h3>Etat du foncionement des PON</h3>
-            {!g2options && <Loading />}
-            <Chart
-              options={g2options.options}
-              series={g2options.series}
-              type='bar'
-              width='380'
-            />
+            {g2options != null ? (
+              <Chart
+                options={g2options.options}
+                series={g2options.series}
+                type='bar'
+                width='600'
+                height='600'
+              />
+            ) : (
+              <Loading />
+            )}
           </Card.Body>
         </Card>
       </div>

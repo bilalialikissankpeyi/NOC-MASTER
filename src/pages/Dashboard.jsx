@@ -19,8 +19,10 @@ import parse from 'parse'
 //ALCLB2F6B123
 
 const Dashboard = () => {
-  var date = new Date('13 November 2021 06:00 UTC')
-  var last = new Date(date.toISOString())
+  var date = new Date('11 December 2021 23:00 UTC')
+  var end = new Date(date.toISOString())
+  var start = new Date(date.toISOString())
+  start.setDate(end.getDate() - 24)
   React.useEffect(async () => {
     parse.initialize('myAppId', '', 'myMsterKey')
     parse.serverURL = 'http://localhost:1337/parse'
@@ -51,21 +53,11 @@ const Dashboard = () => {
               <TotalPon />
             </div>
           </div>
-          <div
-            className='row col-8'
-            style={{
-              margin: '60px',
-            }}
-          >
-            <PonChartDash last={last} />
+          <div className='row'>
+            <PonChartDash start={start} end={end} />
           </div>
-          <div
-            className='row col-8'
-            style={{
-              margin: '60px',
-            }}
-          >
-            <UserInformationChart last={last} />
+          <div className='row'>
+            <UserInformationChart start={start} end={end} />
           </div>
         </div>
       </div>

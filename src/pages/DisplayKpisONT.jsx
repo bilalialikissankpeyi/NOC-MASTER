@@ -58,7 +58,7 @@ const DisplayKpis = (props) => {
         case 'Debit IN/OUT Trafic Internet':
           fif.push(element)
           break
-        case 'Volume IN/OUT Trafic de Management':
+        case 'Volume IN/OUT Trafic Management':
           fif.push(element)
           break
         case 'Volume IN/OUT Trafic Voix':

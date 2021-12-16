@@ -79,11 +79,7 @@ const Analytics = () => {
             margin: '60px',
           }}
         >
-          <CpuChart
-            last={last}
-            ObjectName={'MINA-7360FX8:'}
-            olt={'MINA-7360FX8'}
-          />
+          <CpuChart last={last} ObjectName={'DGTG:'} olt={'DGTG'} />
         </div>
         <div
           className='row col-8'
@@ -91,11 +87,7 @@ const Analytics = () => {
             margin: '60px',
           }}
         >
-          <PonChart
-            last={last}
-            ObjectName={'MINA-7360FX8'}
-            olt={'MINA-7360FX8'}
-          />
+          <PonChart last={last} ObjectName={'DGTG'} olt={'DGTG'} />
         </div>
         <div
           className='row col-8'
@@ -103,11 +95,7 @@ const Analytics = () => {
             margin: '60px',
           }}
         >
-          <UserInformationChart
-            last={last}
-            ObjectName={'MINA-7360FX8'}
-            olt={'MINA-7360FX8'}
-          />
+          <UserInformationChart last={last} ObjectName={'DGTG'} olt={'DGTG'} />
         </div>
         <div className='row'>
           <div className='col-6'>

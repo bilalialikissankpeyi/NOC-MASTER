@@ -76,7 +76,8 @@ export function getDashBoardLastData(value) {
       var data = await axios.get(url, {
         params: {
           collection: `${value.collection}`,
-          last: value.last,
+          start: value.start,
+          end: value.end,
         },
       })
       console.log('voila', data.data)
@@ -100,7 +101,8 @@ export function getLastData(value) {
           dbname: 'mydb',
           collection: `${value.collection}`,
           ObjectName: value.ObjectName,
-          last: value.last,
+          start: value.start,
+          end: value.end,
           olt: value.olt,
         },
       })

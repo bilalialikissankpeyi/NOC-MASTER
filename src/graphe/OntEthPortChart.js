@@ -12,54 +12,8 @@ const OntEthPort = (props) => {
   const currentont = useSelector((state) => state.currentONT)
   const filtered = useSelector((state) => state.ontFilter)
 
-  var [goptions, setgoptions] = React.useState({
-    series: [{}],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
-  var [g2options, setg2options] = React.useState({
-    series: [],
-    options: {
-      colors: ['#6ab04c', '#2980b9'],
-      chart: {
-        background: 'transparent',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-      },
-      grid: {
-        show: true,
-      },
-    },
-    chart: {
-      width: '100%',
-    },
-  })
+  var [goptions, setgoptions] = React.useState(null)
+  var [g2options, setg2options] = React.useState(null)
   var [isOper, setOper] = React.useState(false)
   var [isAdmin, setAdmin] = React.useState(false)
   React.useEffect(() => {
@@ -86,6 +40,9 @@ const OntEthPort = (props) => {
         chart: {
           background: 'transparent',
         },
+        title: {
+          text: "Etat du service des Ports P1 et P2 de l'ONT",
+        },
         dataLabels: {
           enabled: false,
         },
@@ -106,6 +63,10 @@ const OntEthPort = (props) => {
         colors: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
         chart: {
           background: 'transparent',
+        },
+
+        title: {
+          text: "Etat du service des Ports P3 et P4 de l'ONT",
         },
         dataLabels: {
           enabled: false,
@@ -164,11 +125,10 @@ const OntEthPort = (props) => {
 
   return (
     <>
-      {!goptions && !g2options && <Loading />}
       {isOper == true ? (
         <Card>
           <Card.Body>
-            {goptions.series === [{}] ? (
+            {goptions == null ? (
               <Loading />
             ) : (
               <Chart
@@ -179,7 +139,6 @@ const OntEthPort = (props) => {
                 width='600'
               />
             )}
-            <h3>Etat Operationnel des Ports P1 et P2 de l'ONT</h3>
           </Card.Body>
         </Card>
       ) : (
@@ -188,7 +147,7 @@ const OntEthPort = (props) => {
       {isAdmin == true ? (
         <Card>
           <Card.Body>
-            {g2options.series === [] ? (
+            {g2options == null ? (
               <Loading />
             ) : (
               <Chart
@@ -199,7 +158,6 @@ const OntEthPort = (props) => {
                 width='600'
               />
             )}
-            <h3>Etat Operationnel des Ports P3 et P4 de l'ONT</h3>
           </Card.Body>
         </Card>
       ) : (

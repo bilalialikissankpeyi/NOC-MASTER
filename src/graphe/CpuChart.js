@@ -1,54 +1,28 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
-
+import { Card } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
-import { getLastData } from '../dataService/getSearchInformations'
-
+import { getTimeFrameData } from '../dataService/getSearchInformations'
+import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../graphe/Loading'
 const CpuChart = (props) => {
+  const currentolt = useSelector((state) => state.currentOLT)
+
   const history = useHistory()
-  var [g2options, setg2options] = React.useState({
-    options: {
-      colors: ['#808080', '#0080ff'],
-      labels: ['Down', 'Up'],
-      chart: {
-        events: {
-          dataPointSelection: (event, chartContext, config) => {
-            console.log(config.w.config.labels[config.dataPointIndex])
-          },
-        },
-      },
-    },
-    series: [7, 10],
-  })
 
-  var [goptions, setgoptions] = React.useState({
-    options: {
-      chart: {
-        id: 'basic-bar',
-      },
-      xaxis: {
-        categories: ['LT5', 'LT4', 'LT3', 'LT2', 'LT1'],
-      },
-    },
-    series: [
-      {
-        name: 'series-1',
-        data: [1145, 1133, 2000, 1010, 2310],
-      },
-    ],
-  })
+  var [goptions, setgoptions] = React.useState(null)
 
-  var upOperArray = []
-  var downOperArray = []
   React.useEffect(() => {
     var memorieUsageobject = {
-      series: [{ name: 'memAbsoluteUsage', data: [] }],
+      series: [],
       options: {
         color: ['#6ab04c', '#2980b9', '#2980b6', '#2980c9'],
         chart: {
           background: 'transparent',
+        },
+        title: {
+          text: 'Utilisation de la memoire',
         },
         dataLabels: {
           enabled: false,
@@ -57,82 +31,42 @@ const CpuChart = (props) => {
           curve: 'smooth',
         },
         xaxis: {
-          categories: [],
+          type: 'datetime',
         },
         grid: {
           show: true,
         },
       },
-      chart: {
-        width: '100%',
-      },
     }
-    getLastData({
-      typeofSearch: 'getLastData',
+
+    getTimeFrameData({
+      typeOfSearch: 'getTimeFrameData',
       collection: 'CpuUsage',
       ObjectName: props.ObjectName,
-      last: props.last,
-      olt: props.olt,
+      start: props.start,
+      end: props.end,
+      olt: currentolt.ObjectName,
+      ObjectName: currentolt.ObjectName,
     }).then((result) => {
       if (result.length != 0) {
         console.log('meme', result[0])
         result.map((element) => {
           console.log({ longuer: element.data.length })
+          memorieUsageobject.series.push({
+            name: element.ObjectID.split(':')[1].split('.')[2],
+            data: [],
+          })
           if (element.data.length != 0) {
-            memorieUsageobject.series[0].data.push(
-              element.data[0]['memory Absolute Usage']
-            )
-            memorieUsageobject.options.xaxis.categories.push(
-              element.ObjectID.split(':')[1].split('.')[2]
-            )
-            if (element.data[0]['interface Operation Status'] === null) {
-              console.log('resl', result)
-              upOperArray.push({
-                ...element.data[0],
-                ObjectID: element.ObjectID,
-              })
-            } else if (
-              element.data[0]['interface Operation Status'] === 'down'
-            ) {
-              downOperArray.push({
-                ...element.data[0],
-                ObjectID: element.ObjectID,
-              })
-            }
+            element.data.map((subelement) => {
+              memorieUsageobject.series[
+                memorieUsageobject.series.length - 1
+              ].data.push([
+                new Date(subelement['timestamp']).getTime(),
+                subelement['memory Absolute Usage'],
+              ])
+            })
           }
         })
-
-        if (upOperArray.length != 0 || downOperArray.length != 0) {
-          console.log({ lonng: upOperArray.length })
-          setg2options({
-            options: {
-              color: ['#6ab04c', '#2980c9'],
-              labels: ['Up', 'Down'],
-              chart: {
-                events: {
-                  dataPointSelection: (event, chartContext, config) => {
-                    if (
-                      config.w.config.labels[config.dataPointIndex] === 'null'
-                    ) {
-                      history.push({
-                        pathname: `/Details`,
-                        state: upOperArray,
-                      })
-                    } else if (
-                      config.w.config.labels[config.dataPointIndex] === 'Down'
-                    ) {
-                      history.push({
-                        pathname: `/Details`,
-                        state: downOperArray,
-                      })
-                    }
-                  },
-                },
-              },
-            },
-            series: [upOperArray.length, downOperArray.length],
-          })
-        }
         setgoptions(memorieUsageobject)
       } else {
       }
@@ -141,32 +75,22 @@ const CpuChart = (props) => {
 
   return (
     <>
-      {!goptions && !g2options && <Loading />}
-      <div className='col-6'>
-        <h3>Utilisateur Actif sur l'ensemble des Cartes</h3>
-        {g2options.series === [7, 10] ? (
-          <Loading />
-        ) : (
-          <Chart
-            options={g2options.options}
-            series={g2options.series}
-            type='pie'
-            width='380'
-          />
-        )}
-      </div>
-      <div className='col-6'>
-        <h3>Utilisation de la Memoire</h3>
-        {goptions.series[0].data === [1145, 1133, 2000, 1010, 2310] ? (
-          <Loading />
-        ) : (
-          <Chart
-            options={goptions.options}
-            series={goptions.series}
-            type='bar'
-            width='500'
-          />
-        )}
+      <div className='row'>
+        <Card>
+          <Card.Body>
+            {goptions == null ? (
+              <Loading />
+            ) : (
+              <Chart
+                options={goptions.options}
+                series={goptions.series}
+                type='line'
+                width='600'
+                height='600'
+              />
+            )}
+          </Card.Body>
+        </Card>
       </div>
     </>
   )

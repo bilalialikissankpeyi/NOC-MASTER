@@ -7,8 +7,9 @@ import CpuUsageChart from '../graphe/CpuChart'
 import VlanPort from '../graphe/VlanPortChart'
 import Ont from '../graphe/OntChart'
 import { Card } from 'react-bootstrap'
-import ontEthLinesLoT from '../graphe/OntEthLinesLoTChart'
+import OntEthLinesLoT from '../graphe/OntEthLinesLoTChart'
 import OLTUserInformationChart from '../graphe/OLTUserInformationChart'
+import ApexChart from '../graphe/apex'
 
 const Hour = (props) => {
   var [start, setStart] = React.useState(props.start)
@@ -143,7 +144,7 @@ const Hour = (props) => {
           <Card style={{ color: '#6ab04c' }}>
             <Card.Body>Information sur L'UPLink DE L'OLT</Card.Body>
           </Card>
-          <ontEthLinesLoT
+          <OntEthLinesLoT
             start={start}
             end={end}
             style={{
@@ -164,6 +165,8 @@ const Hour = (props) => {
           <Card style={{ color: '#6ab04c' }}>
             <Card.Body>Information sur L'Etat des Utilisateurs</Card.Body>
           </Card>
+
+          {/*<ApexChart />*/}
           <OLTUserInformationChart
             start={start}
             end={end}
