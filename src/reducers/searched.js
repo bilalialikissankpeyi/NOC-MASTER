@@ -1,4 +1,7 @@
-import { getSearched } from '../dataService/getSearchInformations.js'
+import {
+  getSearched,
+  getLastData,
+} from '../dataService/getSearchInformations.js'
 import { search } from '../actions'
 const initialState = { search: null }
 
@@ -18,8 +21,26 @@ export const loadData = (value) => async (dispatch, getState) => {
     { serialNumber: value },
     'getUserCollection'
   )
-  console.log('data', data)
-  dispatch(search(data))
+
+  getLastData({
+    typeofSearch: 'getUserLastData',
+    collection: 'ISAM_ONT',
+    ObjectName: data.ObjectName,
+    start: new Date('11 December 2021 23:00 UTC').toISOString(),
+    end: new Date('11 December 2021 23:00 UTC').toISOString(),
+    olt: data.ObjectName.split(':')[0],
+  }).then((element) => {
+    console.log('dataaaa', element)
+    element[0].data.map((value) => {
+      console.log('data', value)
+      console.log('data', data)
+      data['interface Administration Status'] =
+        value['interface Administration Status']
+      data['interface Operation Status'] = value['interface Operation Status']
+      data['timestamp'] = new Date(value['timestamp'])
+      dispatch(search(data))
+    })
+  })
 }
 /*.then((res) => {
     console.log('res', res)

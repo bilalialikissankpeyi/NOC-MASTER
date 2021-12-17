@@ -2,23 +2,23 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 //import Table from '../components/table/Table'
-import { Table } from 'reactstrap'
+import { Table } from 'react-bootstrap'
 import customerList from '../assets/JsonData/admin.json'
 import Loading from '../graphe/Loading'
 import { getAllList } from '../dataService/getSearchInformations'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { currentOLT } from '../actions'
+import { currentOLT, oltFilter } from '../actions'
 
 const Customers = () => {
   const [oltInformation, setOltInformation] = React.useState([])
   const dispatch = useDispatch()
   const currentolt = useSelector((state) => state.currentOLT)
-
+  const filtered = useSelector((state) => state.oltFilter)
   const history = useHistory()
   const gotToOlt = (element) => {
     dispatch(currentOLT(element))
-    history.push(`/analytics`)
+    history.push(`/actionsOLT`)
   }
 
   React.useEffect(() => {
@@ -29,29 +29,64 @@ const Customers = () => {
     }).then((result) => {
       console.log('resultat', result)
       var items = []
-      result.map((element) => {
-        var item = []
-        for (var key in element) {
-          if (key !== '_id' && key !== 'FIELD5') {
-            item.push(<td>{element[key]}</td>)
+      if (filtered != '') {
+        result
+          .filter((value) => {
+            if (value.ObjectName.includes(filtered)) return value
+          })
+          .map((element) => {
+            var item = []
+            for (var key in element) {
+              if (key !== '_id' && key !== 'FIELD5') {
+                item.push(<td>{element[key]}</td>)
+              }
+            }
+            items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
+          })
+      } else {
+        result.map((element) => {
+          var item = []
+          for (var key in element) {
+            if (key !== '_id' && key !== 'FIELD5') {
+              item.push(<td>{element[key]}</td>)
+            }
           }
-        }
-        items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
-      })
+          items.push(<tr onClick={() => gotToOlt(element)}>{item}</tr>)
+        })
+      }
+
       setOltInformation(items)
     })
-  }, [])
+  }, [filtered])
 
   return (
     <>
-      {!oltInformation && <Loading />}
       <div>
-        <h2 className='page-header'>customers</h2>
+        <div className='row'>
+          <div className='col-6'>
+            <h2 className='page-header'>OLT</h2>
+          </div>
+
+          <div className='col-6'>
+            <div className='topnav_search'>
+              <input
+                type='text'
+                placeholder='Filter...'
+                onChange={(e) => {
+                  if (e !== '') {
+                    dispatch(oltFilter(e.target.value))
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        {!oltInformation && <Loading />}
         <div className='row'>
           <div className='col-12'>
             <div className='card'>
               <div className='card__body'>
-                <Table hover bordered limit={10}>
+                <Table striped bordered hover size='sm'>
                   <thead>
                     <tr>
                       <th>ObjectName</th>

@@ -1,0 +1,27 @@
+[
+  {
+    "display_name": "Dashboard",
+    "route": "/",
+    "icon": "bx bx-category-alt"
+  },
+  {
+    "display_name": "Equipements",
+    "route": "/customers",
+    "icon": "bx bx-user-pin"
+  },
+  {
+    "display_name": "Données Historiques",
+    "route": "/actions",
+    "icon": "bx bx-cart"
+  },
+  {
+    "display_name": "Inventaire des Debits",
+    "route": "/ont",
+    "icon": "bx bx-store-alt"
+  },
+  {
+    "display_name": "Dictionnaire D'indicateurs",
+    "route": "/settings",
+    "icon": "bx bx-cog"
+  }
+]

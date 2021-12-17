@@ -1,5 +1,25 @@
 import axios from 'axios'
 
+export function getMultipleEntries(value) {
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log('ddd')
+      var data = await axios.get(url, {
+        params: {
+          collection: `${value.collection}`,
+        },
+      })
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
 export function getAllList(value) {
   var url = 'http://localhost:3001/' + `${value.typeofSearch}`
   return new Promise(async (resolve, reject) => {
@@ -11,14 +31,92 @@ export function getAllList(value) {
           query: `${value.query}`,
         },
       })
-      console.log('ddd', data.data)
-      resolve(data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
     } catch (err) {
       console.log(err)
     }
   })
 }
 
+export function getTimeFrameData(value) {
+  console.log({ send: value })
+  var url = 'http://localhost:3001/' + `${value.typeOfSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          dbname: 'mydb',
+          collection: `${value.collection}`,
+          ObjectName: value.ObjectName,
+          start: value.start,
+          end: value.end,
+          olt: value.olt,
+        },
+      })
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        console.log('here', data.data)
+        resolve(data.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
+export function getDashBoardLastData(value) {
+  console.log('value', value)
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          collection: `${value.collection}`,
+          start: value.start,
+          end: value.end,
+        },
+      })
+      console.log('voila', data.data)
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
+export function getLastData(value) {
+  console.log('value', value)
+  var url = 'http://localhost:3001/' + `${value.typeofSearch}`
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data = await axios.get(url, {
+        params: {
+          dbname: 'mydb',
+          collection: `${value.collection}`,
+          ObjectName: value.ObjectName,
+          start: value.start,
+          end: value.end,
+          olt: value.olt,
+        },
+      })
+
+      if (data.data == undefined) {
+        alert('Pas de resultat pour la collection ' + `${value.collection}`)
+      } else {
+        resolve(data.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  })
+}
 export function getSearched(collection, value, typeofSearch) {
   var url = 'http://localhost:3001/' + `${typeofSearch}`
   return new Promise(async (resolve, reject) => {
@@ -32,7 +130,11 @@ export function getSearched(collection, value, typeofSearch) {
               serialNumber: value.serialNumber,
             },
           })
-          resolve(data.data)
+          if (data.data == undefined) {
+            alert('Pas de resultat pour les utilisateurs recherchés ')
+          } else {
+            resolve(data.data)
+          }
         } catch (err) {
           console.log(err)
         }
@@ -46,9 +148,14 @@ export function getSearched(collection, value, typeofSearch) {
               ObjectName: value.ObjectName,
               startdate: value.startdate,
               enddate: value.enddate,
+              olt: value.olt,
             },
           })
-          resolve(data.data)
+          if (data.data == undefined) {
+            alert('Pas de resultat pour cette recherche ')
+          } else {
+            resolve(data.data)
+          }
         } catch (err) {
           console.log(err)
         }

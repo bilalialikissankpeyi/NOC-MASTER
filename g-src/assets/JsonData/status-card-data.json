@@ -1,0 +1,37 @@
+[
+  {
+    "icon": "bx bx-shopping-bag",
+    "count": "Total ONT",
+    "title": "11 093"
+  },
+  {
+    "icon": "bx bx-cart",
+    "count": "Total OLT",
+    "title": "50"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "High Profil",
+    "title": "50 Mb/s"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "Medium Profil",
+    "title": "25 Mb/s"
+  },
+  {
+    "icon": "bx bx-dollar-circle",
+    "count": "Low Profil",
+    "title": "25 Mb/s"
+  },
+  {
+    "icon": "bx bx-receipt",
+    "count": "ONT Family Type",
+    "title": "GSFU"
+  },
+  {
+    "icon": "bx bx-receipt",
+    "count": "OLT Family Type",
+    "title": "ISAM/FTTB/FTTN"
+  }
+]

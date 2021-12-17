@@ -5,23 +5,23 @@
     "icon": "bx bx-category-alt"
   },
   {
-    "display_name": "Customers",
+    "display_name": "Equipements",
     "route": "/customers",
     "icon": "bx bx-user-pin"
   },
   {
-    "display_name": "Actions",
-    "route": "/actions",
+    "display_name": "Données Historiques",
+    "route": "/actionsONT",
     "icon": "bx bx-cart"
   },
   {
-    "display_name": "inventory",
+    "display_name": "Inventaire des Debits",
     "route": "/ont",
     "icon": "bx bx-store-alt"
   },
   {
-    "display_name": "settings",
-    "route": "/settings",
+    "display_name": "Dictionnaire D'indicateurs",
+    "route": "/settnings",
     "icon": "bx bx-cog"
   }
 ]
